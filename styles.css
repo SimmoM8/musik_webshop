@@ -1,0 +1,160 @@
+:root {
+    --color-primary: #641396;
+    --colour-secondary: #1aa8d7;
+    --dark-grey: #2b2b2b;
+    --light-grey: #dedede;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+main {
+    text-align: center;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    color: none;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    color: var(--color-primary);
+}
+
+.img-wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+
+.img-wrapper img {
+    height: 100%;
+}
+
+.header-main__wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.header-main__column {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-categories {
+    background-color: var(--dark-grey);
+}
+
+.categories-list {
+    list-style: none;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+}
+
+.categories-list__item {
+    border-radius: 6px;
+    margin: 8px 0;
+}
+
+.categories-list__item a {
+    color: white;
+    text-align: center;
+    padding: 4px 12px;
+    font-size: 16px;
+}
+
+.categories-list__item:hover {
+    background-color: var(--color-primary);
+}
+
+.ta-centre {
+    text-align: center;
+}
+
+.hero-badges {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+}
+
+.hero-badge {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.hero-badge img {
+    height: 100%;
+}
+
+.teaser-carousel {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow-x: hidden;
+    height: 300px;
+    justify-content: center;
+}
+
+.teaser-carousel__item {
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 0 10px;
+    min-width: 500px;
+    align-items: center;
+}
+
+.teaser-carousel__item img {
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 100%;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    max-width: 100%;
+    height: 100px;
+    text-align: center;
+    border-radius: 20px;
+    border: var(--dark-grey) solid 1px;
+    flex-grow: 1;
+}
+
+footer {
+    background-color: var(--dark-grey);
+    color: white;
+}
+
+footer a {
+    color: white;
+}
+
+.footer__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "footer_socials space footer_app_links"
+        "footer_links_1 footer_links_2 footer_notes"
+    ;
+}

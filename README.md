@@ -16,8 +16,12 @@ En modern, responsiv webshop för gitarrer, trummor och piano.
 1. Klona repot
 2. Öppna index.html i webbläsaren (ingen server behövs)
 
-## Funktioner som är klara
+## Planerade funktioner
 - Responsiv navbar med kategorier
 - Produktlista med filtrering
 - Varukorg med localStorage
 - Enskild produktsida
+
+## Server
+- Ingen server behövs
+- All backend data ska skapas i en local static json file för testing
