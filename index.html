@@ -9,32 +9,37 @@
 </head>
 
 <body>
-    <header>
+    <header class="site-header">
+        <div class="utility-bar">
+            <div class="utility-links">
+                <a href="#">Service</a>
+                <a href="#">Kontakt</a>
+                <a href="#">Om oss</a>
+            </div>
+            <div class="utility-pill">3 års garanti</div>
+            <div class="utility-pill">Betalningssäkerhet</div>
+        </div>
         <div class="header-main__wrapper">
-            <div class="header-main__column ta-cente">
-                <ul class="static-linksr">
-                    <li class="static-links__item">Service</li>
-                    <li class="static-links__item">Kontakt</li>
-                    <li class="static-links__item">Om oss</li>
-                </ul>
-            </div>
             <div class="header-main__column ta-center">
-                <div class="img-wrapper">
-                    <img src="" alt="Site logo." class="site-logo">
-                </div>
-                <div class="search-input">
-                    <input type="text" class="search-input__field" placeholder="Sök">
+                <div class="logo-mark">MW</div>
+                <div class="logo-text">
+                    <span class="logo-title">Musik Webshop</span>
+                    <span class="logo-subtitle">Gitarrer, piano & trummor</span>
                 </div>
             </div>
-            <div class="header-main__column">
-                <ul class="static-links">
-                    <li class="static-links__item">3 års garanti</li>
-                    <li class="static-links__item">Betalningsäkerhet</li>
-                </ul>
-
+            <div class="header-main__column header-search">
+                <div class="search-input">
+                    <input type="text" class="search-input__field" placeholder="Sök efter instrument eller märke...">
+                    <button type="button" class="btn btn-primary">Sök</button>
+                </div>
+                <p class="search-hint">Populärt: Fender, Yamaha, Roland, PRS</p>
+            </div>
+            <div class="header-main__column header-actions">
+                <button class="btn btn-ghost">Logga in</button>
+                <button class="btn btn-primary">Till varukorgen</button>
             </div>
         </div>
-        <div class="header-categories">
+        <nav class="header-categories">
             <ul class="categories-list">
                 <li class="categories-list__item">
                     <a href="#" class="categories-list__link">Gitarr</a>
@@ -45,117 +50,285 @@
                 <li class="categories-list__item">
                     <a href="#" class="categories-list__link">Trummor</a>
                 </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link">Studio</a>
+                </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link">Tillbehör</a>
+                </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link">Nyheter</a>
+                </li>
             </ul>
-        </div>
+        </nav>
     </header>
     <main>
         <section class="main-hero">
-            <div class="welcome-theme">
+            <div class="hero-content">
+                <p class="eyebrow">Vårens nyheter • Leverans på 48h</p>
                 <h1>Välkommen till Musik Webshop</h1>
+                <p class="lede">Instrument, studio och inspiration för alla som vill spela mer. Handplockade favoriter, kunnig support och fri frakt över 1 600 kr.</p>
+                <div class="hero-cta">
+                    <a class="btn btn-primary" href="#">Se gitarrsortiment</a>
+                    <a class="btn btn-ghost" href="#">Upptäck kampanjer</a>
+                </div>
+                <div class="hero-badges">
+                    <div class="hero-badge">
+                        <span class="badge-icon">↩</span>
+                        <span>30 dagars öppet köp</span>
+                    </div>
+                    <div class="hero-badge">
+                        <span class="badge-icon">★</span>
+                        <span>3 års garanti</span>
+                    </div>
+                    <div class="hero-badge">
+                        <span class="badge-icon">🚚</span>
+                        <span>Gratis frakt från 1 600 kr</span>
+                    </div>
+                    <div class="hero-badge">
+                        <span class="badge-icon">❤</span>
+                        <span>Europas bästa service</span>
+                    </div>
+                </div>
             </div>
-            <div class="hero-teaser">
-                <div class="teaser-carousel ">
-                    <a href="" class="teaser-carousel__item">
+            <div class="hero-visual">
+                <div class="teaser-carousel">
+                    <a href="#" class="teaser-carousel__item">
                         <img src="images/img_placeholder_1x1.jpeg" alt="Teaser image 1">
+                        <div class="teaser-label">
+                            <span>Gitarr</span>
+                            <strong>Vintage sunburst</strong>
+                        </div>
                     </a>
-                    <a href="" class="teaser-carousel__item">
+                    <a href="#" class="teaser-carousel__item">
                         <img src="images/img_placeholder_1x1.jpeg" alt="Teaser image 2">
+                        <div class="teaser-label">
+                            <span>Piano</span>
+                            <strong>Studioklara keys</strong>
+                        </div>
                     </a>
-                    <a href="" class="teaser-carousel__item">
+                    <a href="#" class="teaser-carousel__item">
                         <img src="images/img_placeholder_1x1.jpeg" alt="Teaser image 3">
+                        <div class="teaser-label">
+                            <span>Trummor</span>
+                            <strong>Akustiskt & el</strong>
+                        </div>
                     </a>
-                    <a href="" class="teaser-carousel__item">
-                        <img src="images/img_placeholder_1x1.jpeg" alt="Teaser image 4">
-                    </a>
-                </div>
-            </div>
-            <div class="hero-badges">
-                <div class="hero-badge">
-                    <img src="images/img_placeholder_1x1.jpeg" alt="Badge 1">
-                    <span>Dagars pengar tillbaka</span>
-                </div>
-                <div class="hero-badge">
-                    <img src="images/img_placeholder_1x1.jpeg" alt="Badge 2">
-                    <span>Års garanti</span>
-                </div>
-                <div class="hero-badge">
-                    <img src="images/img_placeholder_1x1.jpeg" alt="Badge 3">
-                    <span>Gratis frakt från 1 600 kr</span>
-                </div>
-                <div class="hero-badge">
-                    <img src="images/img_placeholder_1x1.jpeg" alt="Badge 4">
-                    <span>Europas bästa service</span>
-                </div>
-                <div class="hero-badge">
-                    <img src="images/img_placeholder_1x1.jpeg" alt="Badge 5">
-                    <span>Europas största lager</span>
                 </div>
             </div>
         </section>
-        <section class="main-categories">
-            <h2>Våra kategorier</h2>
-            <div class="categories">
-                <a href="" class="category-card">
-                    <div class="img-wrapper"><img src="images/img_placeholder_1x1.jpeg" alt="Category gitarr"></div>
-                    <span>Gitarr</span>
+        <section class="main-categories section-shell">
+            <div class="section-head">
+                <h2>Våra kategorier</h2>
+                <a class="link-arrow" href="#">Se alla</a>
+            </div>
+            <div class="category-grid">
+                <a href="#" class="category-card">
+                    <div class="category-grid__image"><img src="images/img_placeholder_1x1.jpeg" alt="Category gitarr"></div>
+                    <div>
+                        <span class="eyebrow">Gitarr</span>
+                        <p>El, akustiskt, förstärkare och pedaler.</p>
+                    </div>
                 </a>
-                <a href="" class="category-card">
-                    <div class="img-wrapper"><img src="images/img_placeholder_1x1.jpeg" alt="Category piano"></div>
-                    <span>Piano</span>
+                <a href="#" class="category-card">
+                    <div class="category-grid__image"><img src="images/img_placeholder_1x1.jpeg" alt="Category piano"></div>
+                    <div>
+                        <span class="eyebrow">Piano</span>
+                        <p>Stagepianos, digitalpiano och synthar.</p>
+                    </div>
                 </a>
-                <a href="" class="category-card">
-                    <div class="img-wrapper"><img src="images/img_placeholder_1x1.jpeg" alt="Category trummor"></div>
-                    <span>Trummor</span>
+                <a href="#" class="category-card">
+                    <div class="category-grid__image"><img src="images/img_placeholder_1x1.jpeg" alt="Category trummor"></div>
+                    <div>
+                        <span class="eyebrow">Trummor</span>
+                        <p>Akustiska kit, eltrummor och cymbaler.</p>
+                    </div>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-grid__image"><img src="images/img_placeholder_1x1.jpeg" alt="Category studio"></div>
+                    <div>
+                        <span class="eyebrow">Studio</span>
+                        <p>Audio interfaces, monitorer och mickar.</p>
+                    </div>
                 </a>
             </div>
         </section>
-        <section class="main-highlights">
-            <h2>Produkt highlights</h2>
-            <div>
-
+        <section class="main-highlights section-shell">
+            <div class="section-head">
+                <h2>Produkt highlights</h2>
+                <a class="link-arrow" href="#">Nyinkommet</a>
+            </div>
+            <div class="product-grid">
+                <article class="product-card">
+                    <div class="product-image">
+                        <img src="images/img_placeholder_1x1.jpeg" alt="Gitarr highlight">
+                        <span class="pill pill-hot">Bäst just nu</span>
+                    </div>
+                    <div class="product-copy">
+                        <h3>Fender Player Strat MN</h3>
+                        <p>Klassisk strat med modern spelkänsla och kristallklart ljud.</p>
+                        <div class="price-row">
+                            <span class="price">8 990 kr</span>
+                            <span class="tag tag-green">I lager</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-image">
+                        <img src="images/img_placeholder_1x1.jpeg" alt="Piano highlight">
+                        <span class="pill pill-new">Nyhet</span>
+                    </div>
+                    <div class="product-copy">
+                        <h3>Roland FP-30X</h3>
+                        <p>Portabelt digitalpiano med kraftigt speakersystem och Bluetooth.</p>
+                        <div class="price-row">
+                            <span class="price">10 990 kr</span>
+                            <span class="tag tag-yellow">Begränsat</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-image">
+                        <img src="images/img_placeholder_1x1.jpeg" alt="Trummor highlight">
+                        <span class="pill pill-sale">Spara 15%</span>
+                    </div>
+                    <div class="product-copy">
+                        <h3>Yamaha Stage Custom Birch</h3>
+                        <p>Proffskit i björk med punchigt sound för scen och studio.</p>
+                        <div class="price-row">
+                            <span class="price">13 590 kr</span>
+                            <span class="tag tag-green">Fri frakt</span>
+                        </div>
+                    </div>
+                </article>
             </div>
         </section>
-        <section class="main-brands">
-            <h2>Populära märken</h2>
-            <div>
-
+        <section class="main-brands section-shell">
+            <div class="section-head">
+                <h2>Populära märken</h2>
+                <a class="link-arrow" href="#">Alla märken</a>
+            </div>
+            <div class="brand-grid">
+                <span class="brand-chip">Fender</span>
+                <span class="brand-chip">Gibson</span>
+                <span class="brand-chip">PRS</span>
+                <span class="brand-chip">Taylor</span>
+                <span class="brand-chip">Martin</span>
+                <span class="brand-chip">Roland</span>
+                <span class="brand-chip">Yamaha</span>
+                <span class="brand-chip">Nord</span>
+                <span class="brand-chip">DW</span>
+                <span class="brand-chip">Tama</span>
+                <span class="brand-chip">Zildjian</span>
+                <span class="brand-chip">Meinl</span>
             </div>
         </section>
-        <section class="main-promotions">
-            <h2>Erbjudan </h2>
-            <div>
-
+        <section class="main-promotions section-shell">
+            <div class="section-head">
+                <h2>Erbjudanden</h2>
+                <a class="link-arrow" href="#">Se fler deals</a>
+            </div>
+            <div class="promo-grid">
+                <article class="promo-card">
+                    <div class="promo-copy">
+                        <p class="eyebrow">Bundle</p>
+                        <h3>Gitarr + förstärkare</h3>
+                        <p>Sätt ihop din första rigg med 15% paketrabatt och snabb frakt.</p>
+                        <a class="btn btn-primary" href="#">Bygg paket</a>
+                    </div>
+                    <div class="promo-image">
+                        <img src="images/img_placeholder_1x1.jpeg" alt="Gitarrbundle">
+                    </div>
+                </article>
+                <article class="promo-card alt">
+                    <div class="promo-copy">
+                        <p class="eyebrow">Studio</p>
+                        <h3>Podcaster? Vi fixar kedjan</h3>
+                        <p>Mic, interface, stativ och lurar utvalda av våra tekniker.</p>
+                        <a class="btn btn-ghost" href="#">Kolla setup</a>
+                    </div>
+                    <div class="promo-image">
+                        <img src="images/img_placeholder_1x1.jpeg" alt="Studio setup">
+                    </div>
+                </article>
             </div>
         </section>
-        <section class="main-reviews">
-            <h2>Vad andra säger</h2>
-            <div>
-
+        <section class="main-reviews section-shell">
+            <div class="section-head">
+                <h2>Vad andra säger</h2>
+                <a class="link-arrow" href="#">Läs alla omdömen</a>
+            </div>
+            <div class="review-grid">
+                <article class="review-card">
+                    <p class="quote">“Snabb leverans och proffsig hjälp när jag skulle välja första elgitarren.”</p>
+                    <div class="review-meta">
+                        <span class="reviewer">Sofie, Göteborg</span>
+                        <span class="rating">★★★★★</span>
+                    </div>
+                </article>
+                <article class="review-card">
+                    <p class="quote">“Supporten guidar mig varje gång jag behöver nya cymbaler. Grymt gäng!”</p>
+                    <div class="review-meta">
+                        <span class="reviewer">Mikael, Malmö</span>
+                        <span class="rating">★★★★☆</span>
+                    </div>
+                </article>
+                <article class="review-card">
+                    <p class="quote">“Roland-synten kom dagen efter beställning. Bättre än butik.”</p>
+                    <div class="review-meta">
+                        <span class="reviewer">Elin, Uppsala</span>
+                        <span class="rating">★★★★★</span>
+                    </div>
+                </article>
             </div>
         </section>
-        <section class="main-news">
-            <h2>Nyheter</h2>
-            <div>
-
+        <section class="main-news section-shell">
+            <div class="section-head">
+                <h2>Nyheter</h2>
+                <a class="link-arrow" href="#">Till bloggen</a>
+            </div>
+            <div class="news-grid">
+                <article class="news-card">
+                    <p class="eyebrow">Guide</p>
+                    <h3>Så väljer du rätt nybörjarpiano</h3>
+                    <p>Tre modeller under 8 000 kr vi rekommenderar för hemmastudion.</p>
+                    <a class="link-arrow" href="#">Läs guiden</a>
+                </article>
+                <article class="news-card">
+                    <p class="eyebrow">Studio</p>
+                    <h3>Bygg ett tyst inspelningsrum</h3>
+                    <p>Praktiska akustik-tips och produkter som gör störst skillnad.</p>
+                    <a class="link-arrow" href="#">Läs mer</a>
+                </article>
+                <article class="news-card">
+                    <p class="eyebrow">Intervju</p>
+                    <h3>Möt teknikern bakom våra custom-set</h3>
+                    <p>Leo berättar om favoritsetupen för live och studio.</p>
+                    <a class="link-arrow" href="#">Se intervjun</a>
+                </article>
             </div>
         </section>
-        <section class="main-cta">
-            <h2></h2>
-            <div>
-
+        <section class="main-cta section-shell">
+            <div class="cta-card">
+                <div>
+                    <p class="eyebrow">Nyhetsbrev</p>
+                    <h2>Få exklusiva deals och tips varje vecka</h2>
+                    <p>Ingen spam. Bara nya släpp, guides och personliga rekommendationer.</p>
+                </div>
+                <form class="cta-form">
+                    <input type="email" placeholder="Din e-post" aria-label="Din e-post">
+                    <button type="button" class="btn btn-primary">Prenumerera</button>
+                </form>
             </div>
         </section>
-        <section class="main-footer"></section>
     </main>
-    <footer>
+    <footer class="site-footer">
         <div class="footer__wrapper">
             <div class="social-links__row" id="footer_socials">
-                <a href="" class="social-links__item"></a>
-                <a href="" class="social-links__item"></a>
-                <a href="" class="social-links__item"></a>
-                <a href="" class="social-links__item"></a>
-                <a href="" class="social-links__item"></a>
-                <a href="" class="social-links__item"></a>
+                <a href="" class="social-links__item">Instagram</a>
+                <a href="" class="social-links__item">YouTube</a>
+                <a href="" class="social-links__item">Facebook</a>
+                <a href="" class="social-links__item">TikTok</a>
             </div>
             <ul class="footer-links" id="footer_links_1">
                 <li class="footer-links__item">
@@ -192,8 +365,8 @@
                 </li>
             </ul>
             <div id="footer_app_links">
-                <a href=""></a>
-                <a href=""></a>
+                <a href="">iOS app</a>
+                <a href="">Android app</a>
             </div>
             <div id="footer_notes">
                 <span>
