@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strings</title>
+    <title>Strings - Gitarrer, Piano & Trummor</title>
     <link rel="stylesheet" href="styles.css">
-</head>
+    </head>
 
 <body>
     <header class="site-header">
@@ -19,6 +19,7 @@
             <div class="utility-pill">3 års garanti</div>
             <div class="utility-pill">Betalningssäkerhet</div>
         </div>
+        
         <div class="header-main__wrapper">
             <div class="header-main__column ta-center" id="reset-home-btn" style="cursor: pointer;">
                 <div class="logo-mark">S</div>
@@ -27,55 +28,61 @@
                     <span class="logo-subtitle">Gitarrer, piano & trummor</span>
                 </div>
             </div>
+
             <div class="header-main__column header-search">
-<div class="search-input" style="position: relative;">
-    <input type="text" id="search-input" class="search-input__field" placeholder="Sök efter instrument eller märke..." autocomplete="off">
-    <button type="button" id="search-btn" class="btn btn-primary">Sök</button>
-    
-    <div id="search-dropdown" class="search-dropdown"></div>
-</div>
+                <div class="search-input" style="position: relative;">
+                    <input type="text" id="search-input" class="search-input__field" placeholder="Sök efter instrument eller märke..." autocomplete="off">
+                    <button type="button" id="search-btn" class="btn btn-primary">Sök</button>
+                    
+                    <div id="search-dropdown" class="search-dropdown"></div>
+                </div>
                 <p class="search-hint">Populärt: Fender, Yamaha, Roland, PRS</p>
             </div>
+
             <div class="header-main__column header-actions">
                 <button class="btn btn-ghost">Logga in</button>
-               <button class="btn btn-primary" id="open-cart-btn">
-                 Till varukorgen (<span id="cart-count">0</span>)
+                <button class="btn btn-primary" id="open-cart-btn">
+                    Till varukorgen (<span id="cart-count">0</span>)
                 </button>
             </div>
         </div>
+
         <nav class="header-categories">
-          <ul class="categories-list">
-    <li class="categories-list__item">
-        <a href="#" class="categories-list__link" data-category="guitars">Gitarr</a>
-    </li>
-    <li class="categories-list__item">
-        <a href="#" class="categories-list__link" data-category="pianos">Piano</a>
-    </li>
-    <li class="categories-list__item">
-        <a href="#" class="categories-list__link" data-category="drums">Trummor</a>
-    </li>
-    <li class="categories-list__item">
-        <a href="#" class="categories-list__link" data-category="studio">Studio</a>
-    </li>
-    <li class="categories-list__item">
-        <a href="#" class="categories-list__link" data-category="accessories">Tillbehör</a>
-    </li>
-    <li class="categories-list__item">
-        <a href="#" class="categories-list__link" data-category="news">Nyheter</a>
-    </li>
-</ul>
+            <ul class="categories-list">
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link" data-category="guitars">Gitarr</a>
+                </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link" data-category="pianos">Piano</a>
+                </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link" data-category="drums">Trummor</a>
+                </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link" data-category="studio">Studio</a>
+                </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link" data-category="accessories">Tillbehör</a>
+                </li>
+                <li class="categories-list__item">
+                    <a href="#" class="categories-list__link" data-category="news">Nyheter</a>
+                </li>
+            </ul>
         </nav>
     </header>
+
     <main>
-            <section class="main-hero" id="hero-section">
+        <section class="main-hero" id="hero-section">
             <div class="hero-content">
                 <p class="eyebrow">Vårens nyheter • Leverans på 48h</p>
                 <h1>Välkommen till Strings</h1>
                 <p class="lede">Instrument, studio och inspiration för alla som vill spela mer. Handplockade favoriter, kunnig support och fri frakt över 1 600 kr.</p>
+                
                 <div class="hero-cta">
-                    <a class="btn btn-primary" href="#">Se gitarrsortiment</a>
+                    <a class="btn btn-primary filter-trigger" href="#" data-category="guitars">Se gitarrsortiment</a>
                     <a class="btn btn-ghost" href="#">Upptäck kampanjer</a>
                 </div>
+
                 <div class="hero-badges">
                     <div class="hero-badge">
                         <span class="badge-icon">↩</span>
@@ -95,18 +102,18 @@
                     </div>
                 </div>
             </div>
-                </div>
+        </section>
+
+        <section class="main-highlights section-shell">
+            <div class="section-head">
+                <h2>Produkter</h2>
+                <a class="link-arrow" href="#">Nyinkommet</a>
+            </div>
+
+            <div class="product-grid" id="products-container">
             </div>
         </section>
-        <section class="main-highlights section-shell">
-    <div class="section-head">
-        <h2>Produkter</h2>
-        <a class="link-arrow" href="#">Nyinkommet</a>
-    </div>
 
-    <div class="product-grid" id="products-container">
-    </div>
-</section>
         <section class="main-brands section-shell">
             <div class="section-head">
                 <h2>Populära märken</h2>
@@ -127,6 +134,7 @@
                 <span class="brand-chip">Meinl</span>
             </div>
         </section>
+
         <section class="main-promotions section-shell">
             <div class="section-head">
                 <h2>Erbjudanden</h2>
@@ -141,7 +149,7 @@
                         <a class="btn btn-primary" href="#">Bygg paket</a>
                     </div>
                     <div class="promo-image">
-                        <img src="images/img_placeholder_1x1.jpeg" alt="Gitarrbundle">
+                        <img src="images/img_placeholder_1x1.jpeg" alt="Gitarrbundle" onerror="this.style.display='none'">
                     </div>
                 </article>
                 <article class="promo-card alt">
@@ -152,11 +160,12 @@
                         <a class="btn btn-ghost" href="#">Kolla setup</a>
                     </div>
                     <div class="promo-image">
-                        <img src="images/img_placeholder_1x1.jpeg" alt="Studio setup">
+                        <img src="images/img_placeholder_1x1.jpeg" alt="Studio setup" onerror="this.style.display='none'">
                     </div>
                 </article>
             </div>
         </section>
+
         <section class="main-reviews section-shell">
             <div class="section-head">
                 <h2>Vad andra säger</h2>
@@ -186,6 +195,7 @@
                 </article>
             </div>
         </section>
+
         <section class="main-news section-shell">
             <div class="section-head">
                 <h2>Nyheter</h2>
@@ -212,6 +222,7 @@
                 </article>
             </div>
         </section>
+
         <section class="main-cta section-shell">
             <div class="cta-card">
                 <div>
@@ -226,6 +237,7 @@
             </div>
         </section>
     </main>
+
     <footer class="site-footer">
         <div class="footer__wrapper">
             <div class="social-links__row" id="footer_socials">
@@ -235,72 +247,48 @@
                 <a href="" class="social-links__item">TikTok</a>
             </div>
             <ul class="footer-links" id="footer_links_1">
-                <li class="footer-links__item">
-                    <a href="">Allmänna affärsvillkor</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Integritetspolicy</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Cookie-inställningar</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Ångerrätt</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Beställningsprocess</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Tillgänglighetsförklaring</a>
-                </li>
+                <li class="footer-links__item"><a href="">Allmänna affärsvillkor</a></li>
+                <li class="footer-links__item"><a href="">Integritetspolicy</a></li>
+                <li class="footer-links__item"><a href="">Cookie-inställningar</a></li>
+                <li class="footer-links__item"><a href="">Ångerrätt</a></li>
+                <li class="footer-links__item"><a href="">Beställningsprocess</a></li>
+                <li class="footer-links__item"><a href="">Tillgänglighetsförklaring</a></li>
             </ul>
             <ul class="footer-links" id="footer_links_2">
-                <li class="footer-links__item">
-                    <a href="">Om oss</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Jobb och karriär</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Blog</a>
-                </li>
-                <li class="footer-links__item">
-                    <a href="">Annonser</a>
-                </li>
+                <li class="footer-links__item"><a href="">Om oss</a></li>
+                <li class="footer-links__item"><a href="">Jobb och karriär</a></li>
+                <li class="footer-links__item"><a href="">Blog</a></li>
+                <li class="footer-links__item"><a href="">Annonser</a></li>
             </ul>
             <div id="footer_app_links">
                 <a href="">iOS app</a>
                 <a href="">Android app</a>
             </div>
             <div id="footer_notes">
-                <span>
-                    &copy; 2024 Musik Webshop
-                </span>
+                <span>&copy; 2024 Strings</span>
                 <span>We love you, because you rock!</span>
             </div>
         </div>
     </footer>
-<dialog id="cart-modal" class="modal">
+
+    <dialog id="cart-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Din Varukorg</h2>
-                <button id="close-cart-btn" class="close-btn" style="float:right; cursor:pointer;">X</button>
+                <button id="close-cart-btn" class="close-btn" style="float:right; cursor:pointer;">&times;</button>
             </div>
             <div id="cart-items">
                 </div>
             <div class="cart-summary" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
                 <p>Totalt: <strong><span id="cart-total">0</span> kr</strong></p>
-                <button class="btn btn-primary">Gå till kassan</button>
+                <button class="btn btn-primary btn-full">Gå till kassan</button>
             </div>
         </div>
     </dialog>
 
     <dialog id="product-modal" class="modal">
-        <div class="modal-content">
-            <button id="close-product-btn" class="close-btn" style="float:right; cursor:pointer;">X</button>
-            <div id="product-modal-details">
-                </div>
-        </div>
+        <div id="product-modal-details" class="modal-content">
+            </div>
     </dialog>
 
     <script type="module" src="assets/js/main.js"></script>

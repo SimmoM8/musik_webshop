@@ -103,7 +103,6 @@ if (searchInput && searchDropdown) {
         }
     });
 }
-// ... (Din kod för Live Search ligger här ovanför) ...
 
 // ---------------------------------------------------------
 // NYTT: HANTERA "SÖK"-KNAPPEN & ENTER-TANGENTEN
@@ -159,6 +158,7 @@ if (searchInput) {
         }
     });
 }
+
 // ---------------------------------------------------------
 // 2. NAVIGERING & FILTRERING
 // ---------------------------------------------------------
@@ -254,27 +254,57 @@ function attachButtonListeners() {
 // --- PRODUKT MODAL ---
 function openProductModal(product) {
     const content = document.getElementById('product-modal-details');
+    
+    // Vi lägger in HTML för modalen
     content.innerHTML = `
-        <h2>${product.name}</h2>
-        <img src="${product.image}" style="max-width: 100%; border-radius: 8px; margin-bottom: 15px;">
-        <p>${product.description}</p>
-        <h3>${product.price.toLocaleString()} kr</h3>
-        <button id="modal-buy-btn" class="btn btn-primary">Lägg i varukorg</button>
+        <button id="close-product-btn" aria-label="Stäng">&times;</button>
+
+        <div class="modal-image-wrapper">
+            <img src="${product.image}" alt="${product.name}">
+        </div>
+        
+        <div class="modal-info-wrapper">
+            <div class="modal-badges">
+                <span class="tag tag-green">● I lager</span>
+                <span class="tag tag-gray" style="text-transform: capitalize;">${product.category}</span>
+            </div>
+
+            <h2>${product.name}</h2>
+            <p class="modal-description">${product.description}</p>
+            
+            <div class="modal-footer">
+                <h3 class="modal-price">${product.price.toLocaleString()} kr</h3>
+                <button id="modal-buy-btn" class="btn btn-primary btn-full">Lägg i varukorg</button>
+            </div>
+            
+            <div class="modal-meta">
+                <small>Fri frakt • 3 års garanti • 30 dagars öppet köp</small>
+            </div>
+        </div>
     `;
 
-    document.getElementById('modal-buy-btn').addEventListener('click', () => {
+    // 1. KOPPLA KÖP-KNAPPEN (Sök inuti 'content' för säkerhets skull)
+    content.querySelector('#modal-buy-btn').addEventListener('click', () => {
         cart.add(product);
-        productModal.close();
+        const btn = content.querySelector('#modal-buy-btn');
+        btn.textContent = "✔ Tillagd!";
+        btn.style.background = "#10b981";
+        setTimeout(() => productModal.close(), 800);
     });
+
+    // 2. KOPPLA STÄNG-KNAPPEN (Här är den viktiga ändringen!)
+    // Vi använder 'content.querySelector' för att vara 100% säkra på att vi tar RÄTT knapp
+    const closeBtn = content.querySelector('#close-product-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            productModal.close();
+        });
+    }
 
     productModal.showModal();
 }
 
-document.getElementById('close-product-btn').addEventListener('click', () => {
-    productModal.close();
-});
-
-// --- VARUKORG MODAL ---
+// --- HANTERA VARUKORGEN ---
 
 document.getElementById('open-cart-btn').addEventListener('click', () => {
     renderCartContents();
@@ -282,27 +312,33 @@ document.getElementById('open-cart-btn').addEventListener('click', () => {
 });
 
 document.getElementById('close-cart-btn').addEventListener('click', () => {
-    cartModal.close();
+    cartModal.classList.add('closing');
+
+    cartModal.addEventListener('animationend', () => {
+
+        cartModal.close();
+ 
+        cartModal.classList.remove('closing');
+    }, { once: true }); 
 });
 
-// Renderar varukorgens innehåll (Nu med bilder och ta-bort-funktion)
+
 function renderCartContents() {
     const container = document.getElementById('cart-items');
     const totalSpan = document.getElementById('cart-total');
     
     const items = cart.getItems();
     
-    // Om varukorgen är tom
+
     if (items.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding: 20px;">Din varukorg är tom just nu. 🎸</div>';
+        container.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">Din varukorg är tom just nu. 🎸</div>';
         totalSpan.textContent = "0";
         return;
     }
 
-    // Bygg HTML-listan
+
     container.innerHTML = items.map((item, index) => `
-        <div class="cart-item" style="display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee; padding: 10px 0;">
-            
+        <div class="cart-item">
             <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
             
             <div style="flex-grow: 1;">
@@ -310,19 +346,19 @@ function renderCartContents() {
                 <span style="font-size: 0.85rem; color: #666;">${item.price.toLocaleString()} kr</span>
             </div>
 
-            <button class="remove-item-btn" data-index="${index}" style="background:none; border:none; cursor:pointer; color: #ff4d4d; font-size: 1.5rem; line-height: 1;">
+            <button class="remove-item-btn close-btn" data-index="${index}" style="width: 30px; height: 30px; font-size: 1.2rem; background: none;">
                 &times;
             </button>
         </div>
     `).join('');
 
-    // Räkna total
+
     const total = items.reduce((sum, item) => sum + item.price, 0);
     totalSpan.textContent = total.toLocaleString();
 
-    // Koppla klick-event på alla kryss-knappar
+
     document.querySelectorAll('.remove-item-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
             const index = Number(btn.dataset.index);
             cart.remove(index); 
             renderCartContents(); 
