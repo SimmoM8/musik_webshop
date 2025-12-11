@@ -11,6 +11,13 @@ export class Cart {
     this.updateCounter();
   }
 
+  // NY METOD: Tar bort en vara baserat på dess plats i listan (index)
+  remove(index) {
+    this.items.splice(index, 1);
+    this.save();
+    this.updateCounter();
+  }
+
   getItems() {
     return this.items;
   }
@@ -26,7 +33,6 @@ export class Cart {
     }
   }
   
-  // VG-Bonus: Metod för att tömma varukorgen
   clear() {
       this.items = [];
       this.save();

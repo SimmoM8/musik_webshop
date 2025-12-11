@@ -792,3 +792,114 @@ a:hover {
     font-size: 0.8rem;
     color: #666;
 }
+/* --- MODERN SIDEBAR VARUKORG (Slide-in) --- */
+
+/* Själva dialog-rutan */
+#cart-modal {
+    /* 1. Placering: Låst till högerkanten */
+    position: fixed;
+    top: 0;
+    right: 0; 
+    bottom: 0;
+    left: auto; /* Viktigt för att skriva över default-centrering */
+    margin: 0; /* Tar bort dialogens default-marginaler */
+    
+    /* 2. Storlek */
+    width: 450px; 
+    max-width: 100vw; /* Så den funkar på mobiler också */
+    height: 100vh; /* Fyller hela höjden */
+    max-height: 100vh;
+    
+    /* 3. Utseende */
+    background: #fff;
+    border: none;
+    border-left: 1px solid #ddd;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15); /* Skugga åt vänster */
+    padding: 0; /* Vi sköter padding inuti .modal-content */
+    
+    /* 4. Animation när den öppnas */
+    opacity: 0; /* Börja osynlig (för animationens skull) */
+    transform: translateX(100%); /* Börja utanför skärmen till höger */
+}
+
+/* När dialogen är öppen (webbläsaren lägger automatiskt på attributet 'open') */
+#cart-modal[open] {
+    opacity: 1;
+    transform: translateX(0); /* Glid in till position 0 */
+    
+    /* En snygg animation */
+    animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* Definiera animationen */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* 5. Backdroppen (den mörka bakgrunden bakom) */
+#cart-modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px); /* Snygg oskärpa på bakgrunden */
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- INNEHÅLL I MODALEN --- */
+
+.modal-content {
+    display: flex;
+    flex-direction: column; /* Stapla innehållet vertikalt */
+    height: 100%; /* Fyll hela höjden */
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Gör så att listan med varor kan scrolla, men header och footer sitter fast */
+#cart-items {
+    flex-grow: 1; /* Ta all ledig plats */
+    overflow-y: auto; /* Scrolla om det blir många varor */
+    margin-bottom: 20px;
+    padding-right: 5px; /* Lite luft för scrollbaren */
+}
+
+/* Knapp för att stänga */
+.close-btn {
+    background: #f1f1f1;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.close-btn:hover {
+    background: #ddd;
+}
