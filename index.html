@@ -30,7 +30,7 @@
             <div class="header-main__column header-search">
 <div class="search-input" style="position: relative;">
     <input type="text" id="search-input" class="search-input__field" placeholder="Sök efter instrument eller märke..." autocomplete="off">
-    <button type="button" class="btn btn-primary">Sök</button>
+    <button type="button" id="search-btn" class="btn btn-primary">Sök</button>
     
     <div id="search-dropdown" class="search-dropdown"></div>
 </div>
@@ -44,30 +44,30 @@
             </div>
         </div>
         <nav class="header-categories">
-           <ul class="categories-list">
-                 <li class="categories-list__item">
-                      <a href="#" class="categories-list__link" data-category="guitars">Gitarr</a>
-                </li>
-                <li class="categories-list__item">
-                    <a href="#" class="categories-list__link" data-category="pianos">Piano</a>
-                    </li>
-                <li class="categories-list__item">
-                    <a href="#" class="categories-list__link" data-category="drums">Trummor</a>
-               </li>
-                <li class="categories-list__item">
-                    <a href="#" class="categories-list__link">Studio</a>
-                </li>
-                <li class="categories-list__item">
-                    <a href="#" class="categories-list__link">Tillbehör</a>
-                </li>
-                <li class="categories-list__item">
-                    <a href="#" class="categories-list__link">Nyheter</a>
-                </li>
-            </ul>
+          <ul class="categories-list">
+    <li class="categories-list__item">
+        <a href="#" class="categories-list__link" data-category="guitars">Gitarr</a>
+    </li>
+    <li class="categories-list__item">
+        <a href="#" class="categories-list__link" data-category="pianos">Piano</a>
+    </li>
+    <li class="categories-list__item">
+        <a href="#" class="categories-list__link" data-category="drums">Trummor</a>
+    </li>
+    <li class="categories-list__item">
+        <a href="#" class="categories-list__link" data-category="studio">Studio</a>
+    </li>
+    <li class="categories-list__item">
+        <a href="#" class="categories-list__link" data-category="accessories">Tillbehör</a>
+    </li>
+    <li class="categories-list__item">
+        <a href="#" class="categories-list__link" data-category="news">Nyheter</a>
+    </li>
+</ul>
         </nav>
     </header>
     <main>
-        <section class="main-hero">
+            <section class="main-hero" id="hero-section">
             <div class="hero-content">
                 <p class="eyebrow">Vårens nyheter • Leverans på 48h</p>
                 <h1>Välkommen till Strings</h1>

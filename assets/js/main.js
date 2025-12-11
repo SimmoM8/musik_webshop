@@ -10,6 +10,20 @@ const cartModal = document.getElementById('cart-modal');
 const productModal = document.getElementById('product-modal');
 
 // ---------------------------------------------------------
+// HJÄLPFUNKTION: Toggle Hero (Dölj/Visa bannern)
+// ---------------------------------------------------------
+function toggleHero(show) {
+    const hero = document.getElementById('hero-section');
+    if (hero) {
+        if (show) {
+            hero.style.display = 'block'; 
+        } else {
+            hero.style.display = 'none';
+        }
+    }
+}
+
+// ---------------------------------------------------------
 // 1. HEADER & SÖKFUNKTIONER
 // ---------------------------------------------------------
 
@@ -17,10 +31,15 @@ const productModal = document.getElementById('product-modal');
 const homeBtn = document.getElementById('reset-home-btn');
 if (homeBtn) {
     homeBtn.addEventListener('click', () => {
+        // 1. Töm sökfältet
         const searchInput = document.getElementById('search-input');
         if (searchInput) searchInput.value = "";
         
+        // 2. Visa alla produkter och visa Hero-bannern igen
         renderProducts(products);
+        toggleHero(true); // <--- VISA HERO
+        
+        // 3. Scrolla högst upp
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
@@ -33,17 +52,20 @@ if (searchInput && searchDropdown) {
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         
+        // Om sökfältet är tomt
         if (searchTerm.length === 0) {
             searchDropdown.style.display = 'none';
             searchDropdown.innerHTML = '';
             return;
         }
 
+        // Filtrera produkter
         const filtered = products.filter(product => 
             product.name.toLowerCase().includes(searchTerm) || 
             product.category.toLowerCase().includes(searchTerm)
         );
 
+        // Visa resultatet i dropdown
         if (filtered.length > 0) {
             searchDropdown.style.display = 'block';
             searchDropdown.innerHTML = filtered.map(product => `
@@ -61,7 +83,8 @@ if (searchInput && searchDropdown) {
                 item.addEventListener('click', () => {
                     const id = Number(item.dataset.id);
                     const product = products.find(p => p.id === id);
-                    openProductModal(product);
+                    
+                    openProductModal(product); // Öppna modal
                     
                     searchDropdown.style.display = 'none';
                     searchInput.value = '';
@@ -80,7 +103,62 @@ if (searchInput && searchDropdown) {
         }
     });
 }
+// ... (Din kod för Live Search ligger här ovanför) ...
 
+// ---------------------------------------------------------
+// NYTT: HANTERA "SÖK"-KNAPPEN & ENTER-TANGENTEN
+// ---------------------------------------------------------
+const searchBtn = document.getElementById('search-btn');
+
+// Gemensam funktion för att utföra "Stor sökning"
+function performFullSearch() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const dropdown = document.getElementById('search-dropdown');
+
+    // 1. Dölj dropdown-menyn (vi ska titta på stora listan nu)
+    if (dropdown) dropdown.style.display = 'none';
+
+    if (searchTerm.length > 0) {
+        // 2. Filtrera produkter
+        const filtered = products.filter(product => 
+            product.name.toLowerCase().includes(searchTerm) || 
+            product.category.toLowerCase().includes(searchTerm)
+        );
+
+        // 3. Visa resultatet i stora rutnätet
+        renderProducts(filtered);
+
+        // 4. Dölj Hero-bannern och scrolla ner
+        toggleHero(false);
+        if (productsContainer) {
+            productsContainer.parentElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    } else {
+        // Om fältet är tomt och man klickar sök: Återställ allt
+        renderProducts(products);
+        toggleHero(true);
+    }
+}
+
+// Koppla klick på knappen
+if (searchBtn) {
+    searchBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Stoppa formuläret från att ladda om sidan
+        performFullSearch();
+    });
+}
+
+// Koppla "Enter"-tangenten i sökfältet
+if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performFullSearch();
+            // Ta bort fokus från rutan så tangentbordet fälls ner (på mobil)
+            searchInput.blur();
+        }
+    });
+}
 // ---------------------------------------------------------
 // 2. NAVIGERING & FILTRERING
 // ---------------------------------------------------------
@@ -92,15 +170,20 @@ document.querySelectorAll('.categories-list__link').forEach(link => {
         const category = e.target.dataset.category;
 
         if (category) {
+            // Filtrera listan
             const filtered = products.filter(p => p.category === category);
             renderProducts(filtered);
             
-            // Scrolla ner till produkterna
-            if (productsContainer) {
-                productsContainer.parentElement.scrollIntoView({ behavior: 'smooth' });
-            }
+            // Dölj Hero-bannern så produkterna hamnar i fokus
+            toggleHero(false); // <--- DÖLJ HERO
+            
+            // Scrolla upp till toppen av produkterna
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
         } else {
+            // Om man klickar på "Nyheter" eller liknande
             renderProducts(products);
+            toggleHero(true); // <--- VISA HERO
         }
     });
 });
@@ -108,15 +191,16 @@ document.querySelectorAll('.categories-list__link').forEach(link => {
 // Hero-knappar och Teaser-bilder (filter-trigger)
 document.querySelectorAll('.filter-trigger').forEach(btn => {
     btn.addEventListener('click', (e) => {
-        const category = e.currentTarget.dataset.category; // currentTarget för att fånga länken även vid klick på bild
+        const category = e.currentTarget.dataset.category;
         
         if (category) {
             const filtered = products.filter(p => p.category === category);
             renderProducts(filtered);
             
-            if (productsContainer) {
-                productsContainer.parentElement.scrollIntoView({ behavior: 'smooth' });
-            }
+            // Dölj Hero-bannern
+            toggleHero(false); // <--- DÖLJ HERO
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
 });
@@ -201,7 +285,7 @@ document.getElementById('close-cart-btn').addEventListener('click', () => {
     cartModal.close();
 });
 
-// Denna funktion ritar ut varukorgen med bilder och ta-bort-knappar
+// Renderar varukorgens innehåll (Nu med bilder och ta-bort-funktion)
 function renderCartContents() {
     const container = document.getElementById('cart-items');
     const totalSpan = document.getElementById('cart-total');
@@ -240,8 +324,8 @@ function renderCartContents() {
     document.querySelectorAll('.remove-item-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const index = Number(btn.dataset.index);
-            cart.remove(index); // Ta bort från logiken
-            renderCartContents(); // Rita om direkt
+            cart.remove(index); 
+            renderCartContents(); 
         });
     });
 }

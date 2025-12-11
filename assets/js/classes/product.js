@@ -8,12 +8,17 @@ export class Product {
     this.description = description || "Ett fantastiskt instrument av hög kvalitet.";
   }
 
-  // Denna metod skapar HTML-koden för ett produktkort
+  // Metod för att skapa HTML-kortet
   renderCard() {
     return `
       <article class="product-card" data-category="${this.category}">
         <div class="product-image">
-            <img src="${this.image}" alt="${this.name}" loading="lazy">
+            <img 
+                src="${this.image}" 
+                alt="${this.name}" 
+                loading="lazy"
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400/png?text=Bild+saknas';"
+            >
             <span class="pill pill-new">Nyhet</span>
         </div>
         <div class="product-copy">
