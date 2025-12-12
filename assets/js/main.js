@@ -1,24 +1,50 @@
 import { products } from './data/products.js';
 import { Cart } from './classes/cart.js';
 
-// Klick på loggan: Nollställ allt och gå till startsidan
-const homeBtn = document.getElementById('reset-home-btn');
+// Initiera varukorg
+const cart = new Cart();
 
+// Hämta viktiga DOM-element
+const productsContainer = document.getElementById('products-container');
+const cartModal = document.getElementById('cart-modal');
+const productModal = document.getElementById('product-modal');
+
+// ---------------------------------------------------------
+// HJÄLPFUNKTION: Toggle Hero (Dölj/Visa bannern)
+// ---------------------------------------------------------
+function toggleHero(show) {
+    const hero = document.getElementById('hero-section');
+    if (hero) {
+        if (show) {
+            hero.style.display = 'block'; 
+        } else {
+            hero.style.display = 'none';
+        }
+    }
+}
+
+// ---------------------------------------------------------
+// 1. HEADER & SÖKFUNKTIONER
+// ---------------------------------------------------------
+
+// Återställ allt (Hem-knappen / Loggan)
+const homeBtn = document.getElementById('reset-home-btn');
 if (homeBtn) {
     homeBtn.addEventListener('click', () => {
         // 1. Töm sökfältet
         const searchInput = document.getElementById('search-input');
         if (searchInput) searchInput.value = "";
-
-        // 2. Visa alla produkter igen
-        renderProducts(products); // Se till att 'products' är importerad!
-
+        
+        // 2. Visa alla produkter och visa Hero-bannern igen
+        renderProducts(products);
+        toggleHero(true); // <--- VISA HERO
+        
         // 3. Scrolla högst upp
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
-// --- LIVE SÖK (Autocomplete) ---
+// Live Sök (Autocomplete)
 const searchInput = document.getElementById('search-input');
 const searchDropdown = document.getElementById('search-dropdown');
 
@@ -26,20 +52,20 @@ if (searchInput && searchDropdown) {
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         
-        // 1. Om sökfältet är tomt, dölj listan och avsluta
+        // Om sökfältet är tomt
         if (searchTerm.length === 0) {
             searchDropdown.style.display = 'none';
             searchDropdown.innerHTML = '';
             return;
         }
 
-        // 2. Filtrera produkter
+        // Filtrera produkter
         const filtered = products.filter(product => 
             product.name.toLowerCase().includes(searchTerm) || 
             product.category.toLowerCase().includes(searchTerm)
         );
 
-        // 3. Om vi hittar produkter -> Visa listan
+        // Visa resultatet i dropdown
         if (filtered.length > 0) {
             searchDropdown.style.display = 'block';
             searchDropdown.innerHTML = filtered.map(product => `
@@ -52,103 +78,166 @@ if (searchInput && searchDropdown) {
                 </div>
             `).join('');
 
-            // 4. Gör resultaten klickbara (Öppna modal)
+            // Gör sökresultaten klickbara
             document.querySelectorAll('.search-item').forEach(item => {
                 item.addEventListener('click', () => {
                     const id = Number(item.dataset.id);
                     const product = products.find(p => p.id === id);
                     
-                    openProductModal(product); // Öppna din produkt-popup
+                    openProductModal(product); // Öppna modal
                     
-                    // Rensa sökningen efter klick
                     searchDropdown.style.display = 'none';
                     searchInput.value = '';
                 });
             });
         } else {
-            // Inga träffar
             searchDropdown.style.display = 'block';
             searchDropdown.innerHTML = '<div style="padding:10px; color:#666;">Inga produkter hittades...</div>';
         }
     });
 
-    // 5. Stäng listan om man klickar utanför
+    // Stäng söklistan om man klickar utanför
     document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
             searchDropdown.style.display = 'none';
         }
     });
 }
-// --- 3. MENY-NAVIGERING (Kategorier i headern) ---
+
+// ---------------------------------------------------------
+// NYTT: HANTERA "SÖK"-KNAPPEN & ENTER-TANGENTEN
+// ---------------------------------------------------------
+const searchBtn = document.getElementById('search-btn');
+
+// Gemensam funktion för att utföra "Stor sökning"
+function performFullSearch() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const dropdown = document.getElementById('search-dropdown');
+
+    // 1. Dölj dropdown-menyn (vi ska titta på stora listan nu)
+    if (dropdown) dropdown.style.display = 'none';
+
+    if (searchTerm.length > 0) {
+        // 2. Filtrera produkter
+        const filtered = products.filter(product => 
+            product.name.toLowerCase().includes(searchTerm) || 
+            product.category.toLowerCase().includes(searchTerm)
+        );
+
+        // 3. Visa resultatet i stora rutnätet
+        renderProducts(filtered);
+
+        // 4. Dölj Hero-bannern och scrolla ner
+        toggleHero(false);
+        if (productsContainer) {
+            productsContainer.parentElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    } else {
+        // Om fältet är tomt och man klickar sök: Återställ allt
+        renderProducts(products);
+        toggleHero(true);
+    }
+}
+
+// Koppla klick på knappen
+if (searchBtn) {
+    searchBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Stoppa formuläret från att ladda om sidan
+        performFullSearch();
+    });
+}
+
+// Koppla "Enter"-tangenten i sökfältet
+if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performFullSearch();
+            // Ta bort fokus från rutan så tangentbordet fälls ner (på mobil)
+            searchInput.blur();
+        }
+    });
+}
+
+// ---------------------------------------------------------
+// 2. NAVIGERING & FILTRERING
+// ---------------------------------------------------------
+
+// Menyn i headern (Gitarr, Piano, etc.)
 document.querySelectorAll('.categories-list__link').forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault(); // Hindra sidan från att hoppa/ladda om
-        
-        // Hämta kategorin som vi skrev i HTML (t.ex. "guitars")
+        e.preventDefault();
         const category = e.target.dataset.category;
 
         if (category) {
-            // 1. Filtrera listan
-            const filteredProducts = products.filter(product => product.category === category);
+            // Filtrera listan
+            const filtered = products.filter(p => p.category === category);
+            renderProducts(filtered);
             
-            // 2. Visa produkterna
-            renderProducts(filteredProducts);
-
-            // 3. Scrolla ner smidigt så man ser resultatet
-            const productSection = document.getElementById('products-container');
-            if (productSection) {
-                // Vi scrollar till sektionens rubrik istället för själva grid:et, 
-                // så man ser "Produkt highlights"-rubriken också.
-                productSection.parentElement.scrollIntoView({ behavior: 'smooth' });
-            }
+            // Dölj Hero-bannern så produkterna hamnar i fokus
+            toggleHero(false); // <--- DÖLJ HERO
+            
+            // Scrolla upp till toppen av produkterna
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
         } else {
-            // Om man klickar på "Nyheter" eller "Tillbehör" som vi inte har produkter till än:
-            // Visa allt, eller visa ett tomt meddelande? Vi visar allt så länge:
+            // Om man klickar på "Nyheter" eller liknande
             renderProducts(products);
+            toggleHero(true); // <--- VISA HERO
         }
     });
 });
 
-// Initiera varukorg
-const cart = new Cart();
+// Hero-knappar och Teaser-bilder (filter-trigger)
+document.querySelectorAll('.filter-trigger').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const category = e.currentTarget.dataset.category;
+        
+        if (category) {
+            const filtered = products.filter(p => p.category === category);
+            renderProducts(filtered);
+            
+            // Dölj Hero-bannern
+            toggleHero(false); // <--- DÖLJ HERO
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+});
 
-// Hämta DOM-element
-const productsContainer = document.getElementById('products-container');
-const cartModal = document.getElementById('cart-modal');
-const productModal = document.getElementById('product-modal');
+// ---------------------------------------------------------
+// 3. RENDERING AV PRODUKTER
+// ---------------------------------------------------------
 
-// --- RENDERA PRODUKTER ---
 function renderProducts(list = products) {
-    // Töm containern först
+    if (!productsContainer) return;
+
     productsContainer.innerHTML = '';
     
-    // Loopa igenom och skapa HTML för varje produkt
     list.forEach(product => {
-        // Vi måste göra om strängen från renderCard() till ett riktigt DOM-element 
-        // för att kunna lägga det i listan snyggt, men innerHTML funkar bra här:
         productsContainer.innerHTML += product.renderCard();
     });
 
-    // Sätt igång lyssnare på de nya knapparna
     attachButtonListeners();
 }
 
 function attachButtonListeners() {
-    // KÖP-KNAPPAR
+    // Köp-knappar på produktkorten
     document.querySelectorAll('.add-to-cart').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
+            
             cart.add(product);
             
-            // Visuell feedback
+            // Visuell feedback på knappen
             const originalText = e.target.textContent;
             e.target.textContent = "✔ Tillagd";
             setTimeout(() => e.target.textContent = originalText, 1500);
         });
     });
 
-    // INFO-KNAPPAR
+    // Info-knappar
     document.querySelectorAll('.read-more').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = Number(e.target.dataset.id);
@@ -158,79 +247,126 @@ function attachButtonListeners() {
     });
 }
 
-// --- NAVIGERING / FILTRERING ---
-document.querySelectorAll('.categories-list__link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const category = e.target.dataset.category;
+// ---------------------------------------------------------
+// 4. MODALER (PRODUKTINFO & VARUKORG)
+// ---------------------------------------------------------
 
-        if (category) {
-            const filtered = products.filter(p => p.category === category);
-            renderProducts(filtered);
-        } else {
-            // Om man klickar på "Nyheter" eller liknande som saknar kategori, visa allt
-            renderProducts(products);
-        }
+// --- PRODUKT MODAL ---
+function openProductModal(product) {
+    const content = document.getElementById('product-modal-details');
+    
+    // Vi lägger in HTML för modalen
+    content.innerHTML = `
+        <button id="close-product-btn" aria-label="Stäng">&times;</button>
+
+        <div class="modal-image-wrapper">
+            <img src="${product.image}" alt="${product.name}">
+        </div>
+        
+        <div class="modal-info-wrapper">
+            <div class="modal-badges">
+                <span class="tag tag-green">● I lager</span>
+                <span class="tag tag-gray" style="text-transform: capitalize;">${product.category}</span>
+            </div>
+
+            <h2>${product.name}</h2>
+            <p class="modal-description">${product.description}</p>
+            
+            <div class="modal-footer">
+                <h3 class="modal-price">${product.price.toLocaleString()} kr</h3>
+                <button id="modal-buy-btn" class="btn btn-primary btn-full">Lägg i varukorg</button>
+            </div>
+            
+            <div class="modal-meta">
+                <small>Fri frakt • 3 års garanti • 30 dagars öppet köp</small>
+            </div>
+        </div>
+    `;
+
+    // 1. KOPPLA KÖP-KNAPPEN (Sök inuti 'content' för säkerhets skull)
+    content.querySelector('#modal-buy-btn').addEventListener('click', () => {
+        cart.add(product);
+        const btn = content.querySelector('#modal-buy-btn');
+        btn.textContent = "✔ Tillagd!";
+        btn.style.background = "#10b981";
+        setTimeout(() => productModal.close(), 800);
     });
-});
 
-// --- MODALER ---
+    // 2. KOPPLA STÄNG-KNAPPEN (Här är den viktiga ändringen!)
+    // Vi använder 'content.querySelector' för att vara 100% säkra på att vi tar RÄTT knapp
+    const closeBtn = content.querySelector('#close-product-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            productModal.close();
+        });
+    }
 
-// Öppna varukorg
+    productModal.showModal();
+}
+
+// --- HANTERA VARUKORGEN ---
+
 document.getElementById('open-cart-btn').addEventListener('click', () => {
     renderCartContents();
     cartModal.showModal();
 });
 
-// Stäng varukorg
 document.getElementById('close-cart-btn').addEventListener('click', () => {
-    cartModal.close();
+    cartModal.classList.add('closing');
+
+    cartModal.addEventListener('animationend', () => {
+
+        cartModal.close();
+ 
+        cartModal.classList.remove('closing');
+    }, { once: true }); 
 });
 
-// Rendera varukorgens innehåll
+
 function renderCartContents() {
     const container = document.getElementById('cart-items');
-    const items = cart.getItems();
     const totalSpan = document.getElementById('cart-total');
+    
+    const items = cart.getItems();
+    
 
-    container.innerHTML = items.map(item => `
-        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0;">
-            <div>
-                <strong>${item.name}</strong>
-                <br><small>${item.price} kr</small>
+    if (items.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">Din varukorg är tom just nu. 🎸</div>';
+        totalSpan.textContent = "0";
+        return;
+    }
+
+
+    container.innerHTML = items.map((item, index) => `
+        <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+            
+            <div style="flex-grow: 1;">
+                <h4 style="margin: 0; font-size: 0.95rem;">${item.name}</h4>
+                <span style="font-size: 0.85rem; color: #666;">${item.price.toLocaleString()} kr</span>
             </div>
-            <span>${item.price} kr</span>
+
+            <button class="remove-item-btn close-btn" data-index="${index}" style="width: 30px; height: 30px; font-size: 1.2rem; background: none;">
+                &times;
+            </button>
         </div>
     `).join('');
 
-    if(items.length === 0) container.innerHTML = "<p>Din varukorg är tom.</p>";
 
     const total = items.reduce((sum, item) => sum + item.price, 0);
     totalSpan.textContent = total.toLocaleString();
-}
 
-// Produkt-Modal
-function openProductModal(product) {
-    const content = document.getElementById('product-modal-details');
-    content.innerHTML = `
-        <h2>${product.name}</h2>
-        <img src="${product.image}" style="max-width: 100%; border-radius: 8px; margin-bottom: 15px;">
-        <p>${product.description}</p>
-        <h3>${product.price.toLocaleString()} kr</h3>
-        <button id="modal-buy-btn" class="btn btn-primary">Lägg i varukorg</button>
-    `;
 
-    document.getElementById('modal-buy-btn').addEventListener('click', () => {
-        cart.add(product);
-        productModal.close();
+    document.querySelectorAll('.remove-item-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const index = Number(btn.dataset.index);
+            cart.remove(index); 
+            renderCartContents(); 
+        });
     });
-
-    productModal.showModal();
 }
 
-document.getElementById('close-product-btn').addEventListener('click', () => {
-    productModal.close();
-});
-
-// Starta appen
+// ---------------------------------------------------------
+// 5. STARTA APPEN
+// ---------------------------------------------------------
 renderProducts();

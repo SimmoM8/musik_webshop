@@ -1,20 +1,29 @@
 export class Product {
-  constructor(id, name, price, category, image, description) {
+  // Notera: Vi lade till "isNew" på slutet här
+  constructor(id, name, price, category, image, description, isNew = false) {
     this.id = id;
     this.name = name;
     this.price = price;
     this.category = category;
     this.image = image;
     this.description = description || "Ett fantastiskt instrument av hög kvalitet.";
+    this.isNew = isNew; // Sparar infon om det är en nyhet
   }
 
-  // Denna metod skapar HTML-koden för ett produktkort
   renderCard() {
+    // Här skapar vi HTML för badge:n BARA om isNew är true
+    const badgeHtml = this.isNew ? '<span class="pill pill-new">Nyhet</span>' : '';
+
     return `
       <article class="product-card" data-category="${this.category}">
         <div class="product-image">
-            <img src="${this.image}" alt="${this.name}" loading="lazy">
-            <span class="pill pill-new">Nyhet</span>
+            <img 
+                src="${this.image}" 
+                alt="${this.name}" 
+                loading="lazy"
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400/png?text=Bild+saknas';"
+            >
+            ${badgeHtml}
         </div>
         <div class="product-copy">
             <h3>${this.name}</h3>
