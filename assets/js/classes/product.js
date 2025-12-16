@@ -15,11 +15,11 @@ export class Product {
             ? '<span class="pill pill-new">Nyhet</span>' 
             : '';
 
-        // Formatera priset snyggt (t.ex. "8 990" istället för "8990")
         const formattedPrice = this.price.toLocaleString('sv-SE');
 
+        // VIKTIGT: Vi lade till data-id="${this.id}" här nere i <article>
         return `
-            <article class="product-card" data-category="${this.category}">
+            <article class="product-card" data-category="${this.category}" data-id="${this.id}">
                 <div class="product-image">
                     <img 
                         src="${this.image}" 

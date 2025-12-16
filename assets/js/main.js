@@ -46,31 +46,44 @@ function renderProducts(list = products) {
     attachProductButtonListeners();
 }
 
-// Koppla lyssnare på dynamiska produkt-knappar (Köp & Info)
+// Koppla lyssnare (Köp-knapp & Klick på hela kortet)
 function attachProductButtonListeners() {
-    // Köp-knappar
+    
+    // 1. Hantera klick på hela produktkortet (Öppna modal)
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const id = Number(card.dataset.id);
+            const product = products.find(p => p.id === id);
+            openProductModal(product);
+        });
+    });
+
+    // 2. Hantera klick på Köp-knappen
     document.querySelectorAll('.add-to-cart').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            // VIKTIGT: Stoppa klicket från att "bubbla upp" till kortet.
+            // Detta gör att modalen INTE öppnas när vi klickar på Köp.
+            e.stopPropagation();
+
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
             
             cart.add(product);
             
-            // Visuell feedback
+            // Visuell feedback på knappen
             const originalText = e.target.textContent;
             e.target.textContent = "✔ Tillagd";
-            setTimeout(() => e.target.textContent = originalText, 1500);
+            btn.style.background = "#10b981"; // Grön
+            
+            setTimeout(() => {
+                e.target.textContent = originalText;
+                btn.style.background = ""; // Återställ
+            }, 1500);
         });
     });
 
-    // Info-knappar
-    document.querySelectorAll('.read-more').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const id = Number(e.target.dataset.id);
-            const product = products.find(p => p.id === id);
-            openProductModal(product);
-        });
-    });
+    // (Info-knappen behöver ingen egen lyssnare längre eftersom den är en del av kortet, 
+    // men vi låter den vara kvar visuellt)
 }
 
 // Utför "Stor Sökning" (Döljer hero, visar resultat i grid)
@@ -190,7 +203,6 @@ function renderCartContents() {
 document.querySelectorAll('.categories-list__link, .filter-trigger').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
-        // Hantera både länkar och knappar (currentTarget fångar knappen även om man klickar på texten inuti)
         const category = e.currentTarget.dataset.category;
 
         if (category) {
@@ -199,7 +211,6 @@ document.querySelectorAll('.categories-list__link, .filter-trigger').forEach(lin
             toggleHero(false);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            // "Nyheter" eller reset
             renderProducts(products);
             toggleHero(true);
         }
@@ -243,7 +254,6 @@ if (searchInput && searchDropdown) {
                 </div>
             `).join('');
 
-            // Gör sökresultaten klickbara
             document.querySelectorAll('.search-item').forEach(item => {
                 item.addEventListener('click', () => {
                     const id = Number(item.dataset.id);
@@ -259,7 +269,6 @@ if (searchInput && searchDropdown) {
         }
     });
 
-    // Stäng dropdown om man klickar utanför
     document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
             searchDropdown.style.display = 'none';
