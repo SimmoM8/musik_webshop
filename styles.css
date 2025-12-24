@@ -17,6 +17,119 @@
     box-sizing: border-box;
 }
 
+/* ========================
+   DARK MODE (FINAL - MED FIXADE IKONER)
+   ======================== */
+body.dark-mode {
+    /* --- FÄRGPALETT --- */
+    --color-bg: #121212;       
+    --color-surface: #1e1e1e;  
+    --color-ink: #ffffff;      
+    --color-muted: #b3b3b3;    
+    --shadow-soft: 0 4px 20px rgba(0,0,0,0.8);
+    
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+}
+
+/* --- 1. GRUNDLÄGGANDE ELEMENT --- */
+body.dark-mode .site-header,
+body.dark-mode .hero-content,
+body.dark-mode .product-card,
+body.dark-mode .review-card,
+body.dark-mode .news-card,
+body.dark-mode .modal-content,
+body.dark-mode #cart-modal,
+body.dark-mode .search-dropdown,
+body.dark-mode .brand-chip {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    border: 1px solid #333;
+}
+
+body.dark-mode .site-header { border-bottom: 1px solid #333; }
+body.dark-mode .header-categories { background-color: #000; }
+
+body.dark-mode .search-input__field {
+    background-color: #2d2d2d;
+    color: #fff;
+    border: 1px solid #444;
+}
+body.dark-mode .search-input__field::placeholder { color: #888; }
+
+/* --- 2. KNAPPAR --- */
+body.dark-mode .btn-ghost {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+}
+body.dark-mode .btn-ghost:hover {
+    background-color: #fff;
+    color: #000 !important; /* Svart text vid hover */
+    border-color: #fff;
+}
+
+body.dark-mode .btn-primary { color: #fff; box-shadow: none; }
+body.dark-mode .btn-primary:hover { opacity: 0.9; }
+
+/* --- 3. BILDHANTERING (Vita tavlor) --- */
+body.dark-mode .product-image,
+body.dark-mode .modal-image-wrapper {
+    background-color: #fff; 
+    border-bottom: 1px solid #333;
+}
+body.dark-mode .product-image img,
+body.dark-mode .modal-image-wrapper img {
+    filter: brightness(0.95); 
+}
+
+/* --- 4. TEXT --- */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4 { color: #fff; }
+body.dark-mode p, body.dark-mode span, body.dark-mode .utility-links a { color: var(--color-muted); }
+
+/* --- 5. IKONER & BADGES (FIXEN DU BAD OM) --- */
+
+/* Fixa Hero-ikonerna (30 dagars öppet köp etc) */
+/* Gör själva rutan genomskinlig så den smälter in i bakgrunden */
+body.dark-mode .hero-badge {
+    background-color: transparent; 
+    border: none;
+    color: var(--color-muted);
+}
+
+/* Ändra den lilla cirkeln (emoji-bakgrunden) till mörkgrå */
+body.dark-mode .badge-icon {
+    background-color: #333; 
+    color: #fff;
+    border: 1px solid #444;
+}
+
+/* Fixa "Nyhet"-pillret på produktkorten */
+body.dark-mode .pill {
+    color: #fff !important; /* Tvinga vit text */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2); /* Liten textskugga för läsbarhet */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Snygg skugga mot den vita bakgrunden */
+}
+
+/* Fixa stäng-knappar */
+body.dark-mode .close-btn {
+    background-color: #333;
+    color: #fff;
+}
+body.dark-mode .close-btn:hover {
+    background-color: #fff;
+    color: #000;
+}
+/* --- 6. FIXA "I LAGER"-TAGGEN --- */
+    body.dark-mode .tag-green {
+        background-color: rgba(34, 197, 94, 0.2); /* Mörk genomskinlig grön bakgrund */
+        color: #4ade80; /* Ljus neongrön text som poppar */
+        border: 1px solid rgba(34, 197, 94, 0.3); /* Tunn grön ram för snygg finish */
+    }
+
+/* ========================
+   GLOBALA STILAR
+   ======================== */
 body {
     font-family: 'Manrope', sans-serif;
     background: radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.05), transparent 25%), 
@@ -277,7 +390,7 @@ a:hover { color: var(--color-primary); }
 .pill-new { background: linear-gradient(120deg, #3b82f6, #1d4ed8); }
 
 .product-copy { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
-.product-copy h3 { font-size: 1.1rem; font-weight: 700; }
+.product-copy h3 { font-size: 0.85rem; margin-bottom: 4px; line-height: 1.3; min-height: 2.6em; /* Reservera plats för 2 rader text så titlarna linjerar */ display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .product-copy p { font-size: 0.9rem; color: var(--color-muted); line-height: 1.5; }
 
 .price-row {
@@ -395,4 +508,200 @@ dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px)
     .modal-image-wrapper { padding: 40px 20px; min-height: 300px; }
     .modal-image-wrapper img { max-height: 250px; }
     .modal-info-wrapper { padding: 32px; }
+}
+/* =========================================
+   MOBILANPASSNING (KOMPAKT & RESPONSIV)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* --- 1. HEADER & TOPP --- */
+    .utility-bar {
+        display: none; /* Vi döljer den översta grå listen helt på mobil för att spara plats */
+    }
+
+    .header-main__wrapper {
+        padding: 10px 15px;
+        gap: 10px;
+        grid-template-columns: 1fr auto; /* Logga vänster, meny/cart höger om vi vill, men här kör vi flex */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .logo-mark { width: 40px; height: 40px; font-size: 20px; } /* Lite mindre logga */
+    .logo-title { font-size: 1.1rem; }
+    .logo-subtitle { display: none; } /* Dölj undertiteln på mobil */
+
+    .header-search { order: 3; width: 100%; margin-top: 5px; }
+    .search-input__field { padding: 8px 16px; font-size: 0.9rem; } /* Kompaktare sökfält */
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .header-actions .btn {
+        flex: 1;
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+
+    /* --- 2. HERO (KOMPAKT LISTA) --- */
+    main { padding: 15px; gap: 30px; }
+
+    .hero-content {
+        padding: 20px;
+    }
+    .hero-content h1 { font-size: 1.8rem; margin-bottom: 10px; }
+    .lede { font-size: 0.95rem; margin-bottom: 20px; }
+
+    .hero-cta { flex-direction: column; gap: 8px; margin-bottom: 30px; }
+    .hero-cta .btn { width: 100%; padding: 12px; }
+
+    /* Här gör vi ikonerna till en kompakt lista! */
+    .hero-badges {
+        display: flex;
+        flex-direction: column; /* Lista uppifrån och ner */
+        gap: 10px; /* Tajt mellan raderna */
+        align-items: flex-start; /* Vänsterställ */
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 12px;
+    }
+    
+    .hero-badge {
+        font-size: 0.85rem; /* Mindre text */
+        width: 100%;
+    }
+    
+    .badge-icon {
+        width: 24px; height: 24px; /* Mindre boll */
+        font-size: 0.8rem; /* Mindre emoji */
+    }
+
+    /* --- 3. PRODUKT MODAL (KOMPAKT) --- */
+    #product-modal {
+        width: 95%; /* Fyll nästan hela bredden */
+        max-height: 90vh; /* Lämna lite plats uppe och nere */
+        border-radius: 16px;
+    }
+    
+    #product-modal-details {
+        display: flex;
+        flex-direction: column; /* Bild överst, text under */
+    }
+
+    .modal-image-wrapper {
+        padding: 15px; /* Mycket mindre luft runt bilden */
+        min-height: auto;
+        background: #fff; /* Vit bakgrund ser ofta renare ut på mobil */
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .modal-image-wrapper img {
+        max-height: 180px; /* Begränsa bildstorleken så man slipper scrolla för att se texten */
+    }
+    
+    #close-product-btn {
+        top: 10px; right: 10px; /* Flytta in krysset lite */
+        width: 32px; height: 32px; font-size: 1.2rem;
+    }
+
+    .modal-info-wrapper {
+        padding: 20px; /* Tajtare padding runt texten */
+    }
+    
+    .modal-info-wrapper h2 { font-size: 1.4rem; margin-bottom: 10px; }
+    .modal-description { font-size: 0.9rem; margin-bottom: 20px; }
+    .modal-price { font-size: 1.8rem; margin-bottom: 10px; }
+    
+    .modal-badges {
+        margin-bottom: 10px;
+    }
+    .modal-badges .tag { font-size: 0.7rem; padding: 2px 8px; }
+
+    /* --- 4. VARUKORG MODAL (KOMPAKT) --- */
+    #cart-modal { width: 100%; } /* Hela bredden på mobil */
+    
+    .modal-content { padding: 20px; }
+    
+    .cart-item {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .cart-item img {
+        width: 40px; height: 40px; /* Mindre thumbnails i korgen */
+    }
+    
+    .cart-item h4 { font-size: 0.9rem; }
+    
+/* --- 5. PRODUKT-GRID (2 i bredd & Perfekt linjering) --- */
+    .product-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        gap: 12px; /* Lite mer luft mellan korten */
+        align-items: stretch; /* Tvingar alla kort i en rad att bli lika höga */
+    }
+
+    /* Gör kortet till en flex-behållare så vi kan styra innehållet */
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Fyller ut hela höjden som grid ger den */
+    }
+
+    .product-image {
+        aspect-ratio: 1/1; /* Tvingar bilden att alltid vara kvadratisk på mobil */
+        height: auto;
+    }
+
+    /* Gör text-delen till en flex-behållare också */
+    .product-card .product-copy {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Låt denna del växa och ta all plats som blir över */
+        justify-content: space-between; /* Sprid ut innehållet */
+    }
+
+    .product-copy h3 {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+        line-height: 1.3;
+        min-height: 2.6em; /* Reservera plats för 2 rader text så titlarna linjerar */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        overflow: hidden;
+    }
+
+    .product-copy p {
+        display: none; /* Dölj beskrivningstext */
+    }
+
+    .price-row {
+        margin-top: auto; /* VIKTIGT: Detta trycker ner priset och knapparna till botten! */
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        margin-bottom: 8px;
+    }
+    
+    .price { font-size: 1rem; }
+    .tag-green { font-size: 0.65rem; padding: 2px 6px; }
+
+    .card-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .card-actions .btn {
+        width: 100%;
+        padding: 8px;
+        font-size: 0.8rem;
+        height: 36px; /* Fast höjd på knappar så de ser exakt lika ut */
+    }
 }

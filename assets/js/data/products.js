@@ -149,7 +149,7 @@ export const products = [
         "Teenage Engineering OP-1",
         13990,
         "news",
-        "https://images.unsplash.com/photo-1626848777033-68e37a287a17?w=600&q=80",
+        "https://www.jpstore.se/PICTURE/6255-82-teenage-engineering-op-1_yxt6x.jpg",
         "Den heta portabla synten och workstationen. Skapa musik var som helst.",
         true
     ),
@@ -158,7 +158,7 @@ export const products = [
         "Fender Tone Master Pro",
         18490,
         "news",
-        "https://images.unsplash.com/photo-1563351984-75466b0c2a29?w=600&q=80",
+        "https://www.stars-music.com/medias/fender/cropped-tone-master-pro-guitar-processor-201986.png",
         "Fenders senaste flaggskepp. Alla klassiska förstärkare i en digital box.",
         true
     )

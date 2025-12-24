@@ -311,7 +311,32 @@ if (closeCartBtn) {
         }, { once: true });
     });
 }
+// ==========================================
+// DARK MODE TOGGLE
+// ==========================================
+const themeToggleBtn = document.getElementById('theme-toggle');
+const body = document.body;
 
+// 1. Kolla om användaren valt mörkt läge tidigare
+if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-mode');
+    if(themeToggleBtn) themeToggleBtn.textContent = '☀️';
+}
+
+// 2. Lyssna på klick
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        
+        if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+            themeToggleBtn.textContent = '☀️';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeToggleBtn.textContent = '🌙';
+        }
+    });
+}
 // ==========================================
 // 5. INITIALIZATION
 // ==========================================
