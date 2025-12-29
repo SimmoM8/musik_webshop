@@ -11,6 +11,7 @@
 <body>
 
     <header class="site-header">
+        
         <div class="utility-bar">
             <div class="utility-links">
                 <a href="#">Service</a>
@@ -22,7 +23,8 @@
         </div>
 
         <div class="header-main__wrapper">
-            <div class="header-main__column ta-center" id="reset-home-btn" style="cursor: pointer;">
+            
+            <div class="header-main__column ta-center" id="reset-home-btn">
                 <div class="logo-mark">S</div>
                 <div class="logo-text">
                     <span class="logo-title">Strings</span>
@@ -31,7 +33,7 @@
             </div>
 
             <div class="header-main__column header-search">
-                <div class="search-input" style="position: relative;">
+                <div class="search-input">
                     <input type="text" id="search-input" class="search-input__field" placeholder="Sök efter instrument eller märke..." autocomplete="off">
                     <button type="button" id="search-btn" class="btn btn-primary">Sök</button>
                     <div id="search-dropdown" class="search-dropdown"></div>
@@ -40,11 +42,12 @@
             </div>
 
             <div class="header-main__column header-actions">
-                <button id="theme-toggle" class="btn btn-ghost" aria-label="Ändra tema" style="padding: 0 12px; font-size: 1.2rem;">
+                <button id="theme-toggle" class="btn btn-ghost" aria-label="Ändra tema">
                     🌙
                 </button>
                 
                 <button class="btn btn-ghost">Logga in</button>
+                
                 <button class="btn btn-primary" id="open-cart-btn">
                     Till varukorgen (<span id="cart-count">0</span>)
                 </button>
@@ -64,6 +67,7 @@
     </header>
 
     <main>
+        
         <section class="main-hero" id="hero-section">
             <div class="hero-content">
                 <p class="eyebrow">Vårens nyheter • Leverans på 48h</p>
@@ -266,20 +270,34 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Din Varukorg</h2>
-                <button id="close-cart-btn" class="close-btn" style="float:right; cursor:pointer;">&times;</button>
+                <button id="close-cart-btn" class="close-btn">&times;</button>
             </div>
             <div id="cart-items">
                 </div>
-            <div class="cart-summary" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
-                <p>Totalt: <strong><span id="cart-total">0</span> kr</strong></p>
+            <div class="cart-summary">
+                <p>Totalt: <strong><span id="cart-total-price">0</span> kr</strong></p>
                 <button class="btn btn-primary btn-full">Gå till kassan</button>
             </div>
         </div>
     </dialog>
 
     <dialog id="product-modal" class="modal">
-        <div id="product-modal-details" class="modal-content">
+        <div id="product-modal-details" class="modal-content modal-product-layout">
+            <button id="close-product-btn" class="close-btn" aria-label="Stäng">&times;</button>
+            
+            <div class="modal-image-wrapper">
+                <img id="modal-img" src="" alt="">
             </div>
+            
+            <div class="modal-info-wrapper">
+                <h2 id="modal-title"></h2>
+                <p id="modal-desc" class="modal-description"></p>
+                <div class="modal-footer">
+                    <h3 id="modal-price" class="modal-price"></h3>
+                    <button id="modal-buy-btn" class="btn btn-primary btn-full">Lägg i varukorg</button>
+                </div>
+            </div>
+        </div>
     </dialog>
 
     <script type="module" src="assets/js/main.js"></script>

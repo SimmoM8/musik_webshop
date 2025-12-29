@@ -1,6 +1,13 @@
+/**
+ * products.js
+ * Denna fil fungerar som vår "databas".
+ * Här skapar vi upp alla produkter som ska finnas i webbshoppen.
+ */
+
 import { Product } from '../classes/product.js';
 
 export const products = [
+    
     // --- GITARRER ---
     new Product(
         1,
@@ -9,7 +16,7 @@ export const products = [
         "guitars",
         "https://static.bax-shop.es/image/product/440140/1448729/b452780d/1528697901fender_player_stratocaster_hss_mn_3cs.jpg?key=og",
         "Klassisk stratocaster med modern spelkänsla och kristallklart ljud.",
-        true
+        true // Nyhet
     ),
     new Product(
         2,
@@ -32,7 +39,7 @@ export const products = [
         "Martin D-28",
         34900,
         "guitars",
-         "https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_60/605895/19766464_800.jpg",
+        "https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_60/605895/19766464_800.jpg",
         "Legendaren inom akustiska gitarrer. Varmt, fylligt ljud som bara blir bättre med åren."
     ),
 
@@ -44,7 +51,7 @@ export const products = [
         "pianos",
         "https://www.schmittmusic.com/cdn/shop/files/roland-fp-30x-bk_digital-piano-8.jpg?v=1722222413&width=1214",
         "Vårt mest sålda digitalpiano. Autentisk spelkänsla i kompakt format.",
-        true
+        true // Nyhet
     ),
     new Product(
         6,
@@ -71,7 +78,7 @@ export const products = [
         "drums",
         "https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_36/365985/12330477_800.jpg",
         "Ett komplett trumset i 100% björk. Perfekt för både repan och scenen.",
-        true
+        true // Nyhet
     ),
     new Product(
         9,
@@ -106,7 +113,7 @@ export const products = [
         "studio",
         "https://andreassonmusik.se/content/images/thumbs/0042902_focusrite-scarlett-2i2-4th-gen.jpeg",
         "Världens mest sålda ljudkort. Koppla in, spela in, låt proffsig.",
-        true
+        true // Nyhet
     ),
     new Product(
         13,
@@ -151,7 +158,7 @@ export const products = [
         "news",
         "https://www.jpstore.se/PICTURE/6255-82-teenage-engineering-op-1_yxt6x.jpg",
         "Den heta portabla synten och workstationen. Skapa musik var som helst.",
-        true
+        true // Nyhet
     ),
     new Product(
         18,
@@ -160,6 +167,6 @@ export const products = [
         "news",
         "https://www.stars-music.com/medias/fender/cropped-tone-master-pro-guitar-processor-201986.png",
         "Fenders senaste flaggskepp. Alla klassiska förstärkare i en digital box.",
-        true
+        true // Nyhet
     )
 ];

@@ -1,3 +1,7 @@
+/**
+ * Klass som representerar en enskild produkt.
+ * Ansvarar för att hålla data om produkten och skapa dess HTML-kort.
+ */
 export class Product {
     constructor(id, name, price, category, image, description, isNew = false) {
         this.id = id;
@@ -5,19 +9,27 @@ export class Product {
         this.price = price;
         this.category = category;
         this.image = image;
+        // Om ingen beskrivning finns, använd en standardtext
         this.description = description || "Ett fantastiskt instrument av hög kvalitet.";
         this.isNew = isNew;
     }
 
+    /**
+     * Skapar HTML-koden för produktkortet som visas på sidan.
+     * @returns {string} En sträng med HTML
+     */
     renderCard() {
         // Skapa "Nyhet"-badge bara om isNew är true
         const badgeHtml = this.isNew 
             ? '<span class="pill pill-new">Nyhet</span>' 
             : '';
 
+        // Formatera priset snyggt på svenska (t.ex. "10 000" istället för "10000")
         const formattedPrice = this.price.toLocaleString('sv-SE');
 
-        // VIKTIGT: Vi lade till data-id="${this.id}" här nere i <article>
+        // Returnera HTML-strukturen.
+        // VIKTIGT: Vi använder CSS-klasser istället för inline-styles här
+        // för att responsiviteten (mobilvyn) ska fungera korrekt.
         return `
             <article class="product-card" data-category="${this.category}" data-id="${this.id}">
                 <div class="product-image">
@@ -39,11 +51,11 @@ export class Product {
                         <span class="tag tag-green">I lager</span>
                     </div>
 
-                    <div class="card-actions" style="margin-top: 15px; display: flex; gap: 10px;">
-                        <button class="btn btn-primary add-to-cart" data-id="${this.id}" style="padding: 5px 15px; font-size: 0.9rem;">
+                    <div class="card-actions">
+                        <button class="btn btn-primary add-to-cart" data-id="${this.id}">
                             Köp
                         </button>
-                        <button class="btn btn-ghost read-more" data-id="${this.id}" style="padding: 5px 15px; font-size: 0.9rem;">
+                        <button class="btn btn-ghost read-more" data-id="${this.id}">
                             Info
                         </button>
                     </div>
