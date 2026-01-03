@@ -62,7 +62,7 @@ function renderProducts(list = products) {
         productsContainer.innerHTML = '<p class="ta-center">Inga produkter hittades.</p>';
         return;
     }
-    
+
     // Skapa HTML för varje produkt
     list.forEach(product => {
         productsContainer.innerHTML += product.renderCard();
@@ -77,7 +77,7 @@ function renderProducts(list = products) {
  * Körs varje gång vi ritar om produkterna.
  */
 function attachProductButtonListeners() {
-    
+
     // 1. Hantera klick på hela kortet (Öppna modal)
     document.querySelectorAll('.product-card').forEach(card => {
         card.addEventListener('click', (e) => {
@@ -97,15 +97,15 @@ function attachProductButtonListeners() {
 
             const id = parseInt(e.target.dataset.id);
             const product = products.find(p => p.id === id);
-            
+
             if (product) {
                 cart.add(product);
-                
+
                 // Visuell feedback (Knappen blir grön en kort stund)
                 const originalText = e.target.textContent;
                 e.target.textContent = "✔";
                 e.target.style.background = "#10b981"; // Grön färg
-                
+
                 setTimeout(() => {
                     e.target.textContent = originalText;
                     e.target.style.background = ""; // Återställ
@@ -120,20 +120,20 @@ function attachProductButtonListeners() {
  */
 function performFullSearch() {
     const searchTerm = searchInput.value.toLowerCase();
-    
+
     // Dölj dropdown-menyn vid sökning
     if (searchDropdown) searchDropdown.style.display = 'none';
 
     if (searchTerm.length > 0) {
         // Filtrera listan
-        const filtered = products.filter(product => 
-            product.name.toLowerCase().includes(searchTerm) || 
+        const filtered = products.filter(product =>
+            product.name.toLowerCase().includes(searchTerm) ||
             product.category.toLowerCase().includes(searchTerm)
         );
 
         renderProducts(filtered);
         toggleHero(false); // Dölj bannern för att visa resultat
-        
+
         // Scrolla ner till resultaten
         if (productsContainer) {
             productsContainer.scrollIntoView({ behavior: 'smooth' });
@@ -158,7 +158,7 @@ function openProductModal(product) {
 
     // Hantera Köp-knappen inuti modalen
     const modalBuyBtn = document.getElementById('modal-buy-btn');
-    
+
     // Klona knappen för att rensa gamla event listeners (viktigt hack!)
     const newBtn = modalBuyBtn.cloneNode(true);
     modalBuyBtn.parentNode.replaceChild(newBtn, modalBuyBtn);
@@ -170,17 +170,17 @@ function openProductModal(product) {
     // Lägg till klick-lyssnare med animation
     newBtn.addEventListener('click', () => {
         cart.add(product);
-        
+
         // --- VISUELL FEEDBACK (Här är det nya!) ---
         const originalText = newBtn.textContent;
         newBtn.textContent = "✔ Tillagd i varukorg";
         newBtn.style.background = "#10b981"; // Grön färg
-        
+
         // Vänta 1.5 sekund, sen återställ
         setTimeout(() => {
             newBtn.textContent = "Lägg i varukorg";
             newBtn.style.background = ""; // Ta bort den gröna färgen
-            
+
             // Valfritt: Stäng modalen automatiskt efter köp?
             // productModal.style.display = 'none'; 
         }, 1500);
@@ -193,41 +193,44 @@ function openProductModal(product) {
 function renderCartContents() {
     const container = document.getElementById('cart-items');
     const totalSpan = document.getElementById('cart-total-price');
-    const items = cart.getItems();
+    const items = Object.values(cart.getItems());
+    console.log("cart items", items);
 
     // Töm listan först
     container.innerHTML = '';
 
-    if (items.length === 0) {
+    if (items.length < 1) {
         container.innerHTML = '<p class="ta-center">Din varukorg är tom.</p>';
         if (totalSpan) totalSpan.textContent = "0";
         return;
     }
 
-    // Loopa igenom varukorgen
-    let total = 0;
-    items.forEach((item, index) => {
-        total += item.price;
+    // Loopa igenom varukorgen och skapa HTML
+    items.forEach((item) => {
+        const product = item.product;
+        const quantity = item.quantity;
+        console.log("product", product);
         container.innerHTML += `
-            <div class="cart-item" style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain;">
+            <div class="cart-item" data-id="${product.id}">
+                <img src="${product.image}" alt="${product.name}">
                 <div style="flex-grow: 1;">
-                    <h4 style="margin: 0; font-size: 0.9rem;">${item.name}</h4>
-                    <span style="font-size: 0.85rem; color: #666;">${item.price.toLocaleString()} kr</span>
+                    <h4 style="margin: 0; font-size: 0.9rem;">${product.name}</h4>
+                    <span style="font-size: 0.85rem; color: #666;">${product.price.toLocaleString()} kr</span>
                 </div>
-                <button class="btn btn-ghost remove-item-btn" data-index="${index}" style="color: #ef4444; font-size: 1.2rem;">&times;</button>
+                <button class="btn btn-ghost remove-item-btn" data-id="${product.id}">&times;</button>
             </div>
         `;
     });
 
     // Uppdatera totalsumma
-    if (totalSpan) totalSpan.textContent = total.toLocaleString();
+    var cartSum = cart.getTotalPrice();
+    if (totalSpan) totalSpan.textContent = cartSum.toLocaleString();
 
     // Koppla "Ta bort"-knappar
     document.querySelectorAll('.remove-item-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const index = parseInt(e.target.dataset.index);
-            cart.remove(index);
+            const id = e.target.dataset.id;
+            cart.remove(id);
             renderCartContents(); // Rita om korgen
         });
     });
@@ -270,14 +273,14 @@ function setupEventListeners() {
     if (searchInput && searchDropdown) {
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
-            
+
             if (searchTerm.length === 0) {
                 searchDropdown.style.display = 'none';
                 return;
             }
 
-            const filtered = products.filter(product => 
-                product.name.toLowerCase().includes(searchTerm) || 
+            const filtered = products.filter(product =>
+                product.name.toLowerCase().includes(searchTerm) ||
                 product.category.toLowerCase().includes(searchTerm)
             );
 
@@ -333,13 +336,13 @@ function setupEventListeners() {
     }
 
     // --- MODALER (Den viktiga fixen!) ---
-    
+
     // Öppna varukorg
     if (openCartBtn) {
         openCartBtn.addEventListener('click', () => {
             renderCartContents();
             // HÄR ÄR ÄNDRINGEN: Vi använder showModal() så animationen startar
-            cartModal.showModal(); 
+            cartModal.showModal();
         });
     }
 
@@ -383,7 +386,7 @@ function setupDarkMode() {
 
     if (localStorage.getItem('theme') === 'dark') {
         body.classList.add('dark-mode');
-        if(themeToggleBtn) themeToggleBtn.textContent = '☀️';
+        if (themeToggleBtn) themeToggleBtn.textContent = '☀️';
     }
 
     if (themeToggleBtn) {
