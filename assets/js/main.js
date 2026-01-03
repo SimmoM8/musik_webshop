@@ -216,6 +216,8 @@ function renderCartContents() {
                 <div class="cart-item-info">
                 <h4>${product.name}</h4>
 
+                <span>${Number(product.price).toLocaleString()} kr / st</span>
+
                 <div class="cart-item-row">
                     <div class="cart-item-qty">
                     <button class="btn btn-ghost btn-icon qty-btn" data-action="decrement" data-id="${product.id}" aria-label="Minska antal">−</button>
@@ -230,7 +232,7 @@ function renderCartContents() {
                     </button>
                     </div>
 
-                    <span class="cart-item-price">${product.price.toLocaleString()} kr</span>
+                    <span class="cart-item-price">${(Number(product.price) * Number(quantity)).toLocaleString()} kr</span>
                 </div>
                 </div>
             </div>
