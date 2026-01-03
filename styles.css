@@ -257,9 +257,25 @@ a:hover {
     font-size: 1.1rem;
 }
 
-.remove-item-btn {
+.btn-icon {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.btn-icon .icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+    fill: currentColor;
+}
+
+.btn-danger {
     color: #ef4444;
-    font-size: 1.2rem;
+    border-color: #ef4444;
 }
 
 /* =========================================
@@ -968,15 +984,23 @@ dialog::backdrop {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 }
 
 .cart-item {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.cart-item-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #f8fafc;
+    gap: 12px;
+    width: 100%;
 }
 
 .cart-item img {
@@ -996,9 +1020,27 @@ dialog::backdrop {
     text-align: center;
 }
 
-.cart-item-info span {
-    font-size: 0.85rem;
-    color: #666;
+.remove-item-btn {
+    border: none;
+}
+
+.cart-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cart-item-info h4 {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.cart-item-price {
+    margin-left: auto;
+    font-weight: 800;
+    text-align: right;
+    white-space: nowrap;
+    color: var(--color-ink);
 }
 
 .cart-summary {
@@ -1052,35 +1094,6 @@ dialog::backdrop {
 .modal-header h2 {
     margin: 0;
     font-size: 1.5rem;
-}
-
-#cart-items {
-    flex-grow: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.cart-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f8fafc;
-}
-
-.cart-summary {
-    margin-top: auto;
-    padding-top: 24px;
-    border-top: 1px solid #f1f5f9;
-    text-align: center;
-}
-
-.cart-summary p {
-    font-size: 1.2rem;
-    margin-bottom: 16px;
 }
 
 /* --- Produkt Modal (Popup) --- */

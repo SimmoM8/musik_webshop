@@ -214,17 +214,25 @@ function renderCartContents() {
                 <img src="${product.image}" alt="${product.name}">
 
                 <div class="cart-item-info">
-                  <h4>${product.name}</h4>
+                <h4>${product.name}</h4>
 
-                  <div class="cart-item-qty">
-                    <button class="btn btn-ghost qty-btn" data-action="decrement" data-id="${product.id}">−</button>
-                    <span class="qty-value">${quantity}</span>
-                    <button class="btn btn-ghost qty-btn" data-action="increment" data-id="${product.id}">+</button>
-                  </div>
-                  <span>${product.price.toLocaleString()} kr</span>
+                <div class="cart-item-row">
+                    <div class="cart-item-qty">
+                    <button class="btn btn-ghost btn-icon qty-btn" data-action="decrement" data-id="${product.id}" aria-label="Minska antal">−</button>
+                    <span class="qty-value" aria-label="Antal">${quantity}</span>
+                    <button class="btn btn-ghost btn-icon qty-btn" data-action="increment" data-id="${product.id}" aria-label="Öka antal">+</button>
+
+                    <button class="btn btn-ghost btn-icon btn-danger remove-item-btn"
+                            data-action="remove"
+                            data-id="${product.id}"
+                            aria-label="Ta bort">
+                        <i class="bi bi-trash3" aria-hidden="true"></i>
+                    </button>
+                    </div>
+
+                    <span class="cart-item-price">${product.price.toLocaleString()} kr</span>
                 </div>
-                
-                <button class="btn btn-ghost remove-item-btn" data-action="remove" data-id="${product.id}">&times;</button>
+                </div>
             </div>
         `;
     });
@@ -232,15 +240,6 @@ function renderCartContents() {
     // Uppdatera totalsumma
     var cartSum = cart.getTotalPrice();
     if (totalSpan) totalSpan.textContent = cartSum.toLocaleString();
-
-    // Koppla "Ta bort"-knappar
-    document.querySelectorAll('.remove-item-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const id = e.target.dataset.id;
-            cart.remove(id);
-            renderCartContents(); // Rita om korgen
-        });
-    });
 }
 
 // ==========================================
