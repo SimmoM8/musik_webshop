@@ -194,7 +194,6 @@ function renderCartContents() {
     const container = document.getElementById('cart-items');
     const totalSpan = document.getElementById('cart-total-price');
     const items = Object.values(cart.getItems());
-    console.log("cart items", items);
 
     // Töm listan först
     container.innerHTML = '';
@@ -209,7 +208,6 @@ function renderCartContents() {
     items.forEach((item) => {
         const product = item.product;
         const quantity = item.quantity;
-        console.log("product", product);
         container.innerHTML += `
             <div class="cart-item" data-id="${product.id}">
                 <img src="${product.image}" alt="${product.name}">
