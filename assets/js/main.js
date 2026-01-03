@@ -21,6 +21,7 @@ const heroSection = document.getElementById('hero-section');
 
 // Modaler
 const cartModal = document.getElementById('cart-modal');
+const cartItemsContainer = document.getElementById('cart-items');
 const productModal = document.getElementById('product-modal');
 
 // Sök-element
@@ -223,7 +224,7 @@ function renderCartContents() {
                   <span>${product.price.toLocaleString()} kr</span>
                 </div>
                 
-                <button class="btn btn-ghost remove-item-btn" data-id="${product.id}">&times;</button>
+                <button class="btn btn-ghost remove-item-btn" data-action="remove" data-id="${product.id}">&times;</button>
             </div>
         `;
     });
@@ -360,6 +361,35 @@ function setupEventListeners() {
                 cartModal.close();
                 cartModal.classList.remove('closing');
             }, { once: true });
+        });
+    }
+
+    // Hantera alla klickbara knappar på varukorgsitemen
+    if (cartItemsContainer) {
+        cartItemsContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+
+            const id = btn.dataset.id;
+            const action = btn.dataset.action;
+
+            switch (action) {
+                case 'increment':
+                    const productToAdd = cart.getItems()[String(id)];
+                    if (productToAdd) {
+                        cart.add(productToAdd.product);
+                    }
+                    break;
+                case 'decrement':
+                    cart.decrement(id);
+                    break;
+                case 'remove':
+                    cart.remove(id);
+                    break;
+                default:
+                    return; // Okänd åtgärd
+            }
+            renderCartContents(); // Rita om korgen
         });
     }
 
