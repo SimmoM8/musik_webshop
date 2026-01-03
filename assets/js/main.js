@@ -211,10 +211,18 @@ function renderCartContents() {
         container.innerHTML += `
             <div class="cart-item" data-id="${product.id}">
                 <img src="${product.image}" alt="${product.name}">
-                <div style="flex-grow: 1;">
-                    <h4 style="margin: 0; font-size: 0.9rem;">${product.name}</h4>
-                    <span style="font-size: 0.85rem; color: #666;">${product.price.toLocaleString()} kr</span>
+
+                <div class="cart-item-info">
+                  <h4>${product.name}</h4>
+
+                  <div class="cart-item-qty">
+                    <button class="btn btn-ghost qty-btn" data-action="decrement" data-id="${product.id}">−</button>
+                    <span class="qty-value">${quantity}</span>
+                    <button class="btn btn-ghost qty-btn" data-action="increment" data-id="${product.id}">+</button>
+                  </div>
+                  <span>${product.price.toLocaleString()} kr</span>
                 </div>
+                
                 <button class="btn btn-ghost remove-item-btn" data-id="${product.id}">&times;</button>
             </div>
         `;

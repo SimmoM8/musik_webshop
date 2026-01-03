@@ -985,6 +985,22 @@ dialog::backdrop {
     object-fit: contain;
 }
 
+.cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.qty-value {
+    min-width: 20px;
+    text-align: center;
+}
+
+.cart-item-info span {
+    font-size: 0.85rem;
+    color: #666;
+}
+
 .cart-summary {
     margin-top: auto;
     padding-top: 24px;
