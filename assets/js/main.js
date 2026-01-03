@@ -374,17 +374,26 @@ function setupEventListeners() {
             const id = btn.dataset.id;
             const action = btn.dataset.action;
 
+            const entry = cart.getItems()[String(id)];
+            if (!entry) return;
+
+            const { product, quantity } = entry;
+
+            const confirmRemove = () => confirm("Vill du ta bort " + product.name + " från varukorgen?");
+
             switch (action) {
                 case 'increment':
-                    const productToAdd = cart.getItems()[String(id)];
-                    if (productToAdd) {
-                        cart.add(productToAdd.product);
+                    if (product) {
+                        cart.add(product);
                     }
                     break;
                 case 'decrement':
+                    if (quantity <= 1 && !confirmRemove()) return;
                     cart.decrement(id);
+                    // Optionally provide feedback that item was removed
                     break;
                 case 'remove':
+                    if (!confirmRemove()) return;
                     cart.remove(id);
                     break;
                 default:
