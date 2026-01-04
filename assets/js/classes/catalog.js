@@ -26,7 +26,8 @@ export class Catalog {
             const term = state.searchTerm.toLowerCase();
             catalog = catalog.filter(product =>
                 product.name.toLowerCase().includes(term) ||
-                product.description.toLowerCase().includes(term)
+                product.description.toLowerCase().includes(term) ||
+                product.category.toLowerCase().includes(term)
             );
         }
 

@@ -44,9 +44,9 @@ const viewState = {
     category: null,
     search: "", // från sökfältet
     onlyNew: false, // Visa endast nya produkter
-    priceMin: null,
-    priceMax: null,
-    sort: "featured" // featured, price-asc, price-desc, name-asc, name-desc
+    minPrice: null,
+    maxPrice: null,
+    sortBy: "featured" // featured, price-asc, price-desc, name-asc, name-desc
 }
 
 // ==========================================
@@ -134,29 +134,16 @@ function attachProductButtonListeners() {
  * Utför en sökning och uppdaterar sidan.
  */
 function performFullSearch() {
-    const searchTerm = searchInput.value.toLowerCase();
+    viewState.searchTerm = searchInput.value || "";
 
     // Dölj dropdown-menyn vid sökning
     if (searchDropdown) searchDropdown.style.display = 'none';
 
-    if (searchTerm.length > 0) {
-        // Filtrera listan
-        const filtered = products.filter(product =>
-            product.name.toLowerCase().includes(searchTerm) ||
-            product.category.toLowerCase().includes(searchTerm)
-        );
+    applyFiltersAndSorting();
 
-        renderProducts(filtered);
-        toggleHero(false); // Dölj bannern för att visa resultat
-
-        // Scrolla ner till resultaten
-        if (productsContainer) {
-            productsContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-    } else {
-        // Om sökfältet är tomt, visa allt igen
-        renderProducts(products);
-        toggleHero(true);
+    // Scrolla ner till resultaten
+    if (viewState.searchTerm.trim() && productsContainer) {
+        productsContainer.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -164,9 +151,9 @@ function performFullSearch() {
  * Tillämpa filter och sortering baserat på viewState.
  */
 function applyFiltersAndSorting() {
-    let catalog = Catalog.getAllProducts();
-
     const list = catalog.query(viewState);
+
+    console.log(viewState);
 
     renderProducts(list);
     toggleHero(false);
@@ -285,17 +272,21 @@ function setupEventListeners() {
             viewState.category = category === 'news' ? null : category;
             viewState.onlyNew = category === 'news';
             applyFiltersAndSorting();
-
-            renderProducts();
         });
     });
 
     // --- Hem-knapp (Reset) ---
     if (homeBtn) {
         homeBtn.addEventListener('click', () => {
+            viewState.category = null;
+            viewState.onlyNew = false;
+            viewState.searchTerm = '';
+            viewState.minPrice = null;
+            viewState.maxPrice = null;
+            viewState.sortBy = null;
+
             if (searchInput) searchInput.value = "";
-            renderProducts(products);
-            toggleHero(true);
+            applyFiltersAndSorting();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
