@@ -7,6 +7,7 @@
 // Vi går NER i mapparna data och classes
 import { products } from './data/products.js';
 import { Cart } from './classes/cart.js';
+import { Catalog } from './classes/catalog.js';
 
 // ==========================================
 // 1. STATE & DOM ELEMENTS
@@ -14,6 +15,9 @@ import { Cart } from './classes/cart.js';
 
 // Initiera varukorgen
 const cart = new Cart();
+
+// Initiera katalogen
+const catalog = new Catalog(products);
 
 // Hämta viktiga behållare från HTML
 const productsContainer = document.getElementById('products-container');
@@ -34,6 +38,16 @@ const homeBtn = document.getElementById('reset-home-btn'); // Loggan
 const openCartBtn = document.getElementById('open-cart-btn');
 const closeCartBtn = document.querySelector('#cart-modal .close-btn');
 const closeProductBtn = document.getElementById('close-product-btn');
+
+// Produktfilter och vy-tillstånd
+const viewState = {
+    category: null,
+    search: "", // från sökfältet
+    onlyNew: false, // Visa endast nya produkter
+    priceMin: null,
+    priceMax: null,
+    sort: "featured" // featured, price-asc, price-desc, name-asc, name-desc
+}
 
 // ==========================================
 // 2. HELPER FUNCTIONS (Hjälpfunktioner)
@@ -146,6 +160,18 @@ function performFullSearch() {
     }
 }
 
+/**
+ * Tillämpa filter och sortering baserat på viewState.
+ */
+function applyFiltersAndSorting() {
+    let catalog = Catalog.getAllProducts();
+
+    const list = catalog.query(viewState);
+
+    renderProducts(list);
+    toggleHero(false);
+}
+
 // ==========================================
 // 3. MODAL FUNCTIONS
 // ==========================================
@@ -256,14 +282,11 @@ function setupEventListeners() {
             e.preventDefault();
             const category = e.target.dataset.category;
 
-            if (category === 'news') {
-                renderProducts(products.filter(p => p.isNew));
-            } else if (category) {
-                renderProducts(products.filter(p => p.category === category));
-            } else {
-                renderProducts(products);
-            }
-            toggleHero(false);
+            viewState.category = category === 'news' ? null : category;
+            viewState.onlyNew = category === 'news';
+            applyFiltersAndSorting();
+
+            renderProducts();
         });
     });
 
