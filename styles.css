@@ -1645,4 +1645,14 @@ dialog::backdrop {
     .filters-bar__actions .btn {
         width: 100%;
     }
+    /* Döljer texten "Till varukorgen" på mobil */
+    #open-cart-btn .btn-text {
+        display: none;
+    }
+
+    /* Gör knappen lite mer kompakt på mobil */
+    #open-cart-btn {
+        padding: 8px 12px;
+        font-size: 1rem;
+}
 }
