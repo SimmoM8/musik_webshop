@@ -3,8 +3,6 @@
  * Hanterar produkter, varukorg, sökning och modal-fönster.
  */
 
-// Justera importerna så de hittar filerna relativt till denna fil
-// Vi går NER i mapparna data och classes
 import { products } from './data/products.js';
 import { Cart } from './classes/cart.js';
 import { Catalog } from './classes/catalog.js';
@@ -106,7 +104,7 @@ function attachProductButtonListeners() {
     // 1. Hantera klick på hela kortet (Öppna modal)
     document.querySelectorAll('.product-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            // Om man klickar på Köp-knappen ska INTE modalen öppnas (hanteras nedan)
+            // Om man klickar på Köp-knappen ska INTE modalen öppnas
             if (e.target.classList.contains('add-to-cart')) return;
 
             const id = parseInt(card.dataset.id);
@@ -443,13 +441,12 @@ function setupEventListeners() {
         });
     }
 
-    // --- MODALER (Den viktiga fixen!) ---
+    // --- MODALER ---
 
     // Öppna varukorg
     if (openCartBtn) {
         openCartBtn.addEventListener('click', () => {
             renderCartContents();
-            // HÄR ÄR ÄNDRINGEN: Vi använder showModal() så animationen startar
             cartModal.showModal();
         });
     }
@@ -457,7 +454,7 @@ function setupEventListeners() {
     // Stäng varukorg (med animation)
     if (closeCartBtn) {
         closeCartBtn.addEventListener('click', () => {
-            cartModal.classList.add('closing'); // Trigga stäng-animation i CSS
+            cartModal.classList.add('closing'); 
             cartModal.addEventListener('animationend', () => {
                 cartModal.close();
                 cartModal.classList.remove('closing');
@@ -559,5 +556,4 @@ function init() {
     setupDarkMode();       // Kolla färgtema
 }
 
-// Kör igång!
 init();
