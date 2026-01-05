@@ -108,34 +108,45 @@
                 <a class="link-arrow" href="#">Nyinkommet</a>
             </div>
             <div class="filters-bar" aria-label="Filter och sortering">
-                <div class="filters-bar__group">
-                    <label for="sort-select" class="filters-bar__label">Sortera</label>
-                    <select id="sort-select" class="filters-bar__control" aria-label="Sortera produkter">
-                        <option value="featured">Featured</option>
-                        <option value="price-asc">Pris: Lågt → Högt</option>
-                        <option value="price-desc">Pris: Högt → Lågt</option>
-                        <option value="name-asc">Namn: A → Ö</option>
-                        <option value="name-desc">Namn: Ö → A</option>
-                    </select>
-                </div>
-                <div class="filters-bar__group filters-bar__group--price" aria-label="Prisintervall">
-                    <span class="filters-bar__label">Pris (kr)</span>
-                    <div class="filters-bar__range">
-                        <label for="min-price" class="filters-bar__sub-label">Min</label>
-                        <input id="min-price" class="filters-bar__control filters-bar__control--number" type="number" inputmode="numeric" placeholder="Min">
-                        <span class="filters-bar__dash">–</span>
-                        <label for="max-price" class="filters-bar__sub-label">Max</label>
-                        <input id="max-price" class="filters-bar__control filters-bar__control--number" type="number" inputmode="numeric" placeholder="Max">
+                <div class="filters-bar__header">
+                    <div class="filters-bar__title-row">
+                        <span class="filters-bar__title">Filter &amp; sortering</span>
                     </div>
+                    <button type="button" class="filters-bar__toggle" id="filters-toggle-btn" aria-expanded="false" aria-controls="filters-panel">
+                        <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                        <span class="sr-only">Visa filter</span>
+                    </button>
                 </div>
-                <div class="filters-bar__group filters-bar__group--toggle">
-                    <label class="filters-bar__checkbox" for="only-new">
-                        <input type="checkbox" id="only-new">
-                        <span>Endast nyheter</span>
-                    </label>
-                </div>
-                <div class="filters-bar__actions">
-                    <button type="button" class="btn btn-ghost" id="clear-filters-btn">Rensa filter</button>
+                <div id="filters-panel" class="filters-bar__panel">
+                    <div class="filters-bar__group">
+                        <label for="sort-select" class="filters-bar__label">Sortera</label>
+                        <select id="sort-select" class="filters-bar__control" aria-label="Sortera produkter">
+                            <option value="featured">Featured</option>
+                            <option value="price-asc">Pris: Lågt → Högt</option>
+                            <option value="price-desc">Pris: Högt → Lågt</option>
+                            <option value="name-asc">Namn: A → Ö</option>
+                            <option value="name-desc">Namn: Ö → A</option>
+                        </select>
+                    </div>
+                    <div class="filters-bar__group filters-bar__group--price" aria-label="Prisintervall">
+                        <span class="filters-bar__label">Pris (kr)</span>
+                        <div class="filters-bar__range">
+                            <label for="min-price" class="filters-bar__sub-label">Min</label>
+                            <input id="min-price" class="filters-bar__control filters-bar__control--number" type="number" inputmode="numeric" placeholder="Min">
+                            <span class="filters-bar__dash">–</span>
+                            <label for="max-price" class="filters-bar__sub-label">Max</label>
+                            <input id="max-price" class="filters-bar__control filters-bar__control--number" type="number" inputmode="numeric" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="filters-bar__group filters-bar__group--toggle">
+                        <label class="filters-bar__checkbox" for="only-new">
+                            <input type="checkbox" id="only-new">
+                            <span>Endast nyheter</span>
+                        </label>
+                    </div>
+                    <div class="filters-bar__actions">
+                        <button type="button" class="btn btn-ghost" id="clear-filters-btn">Rensa filter</button>
+                    </div>
                 </div>
             </div>
             <div class="product-grid" id="products-container">

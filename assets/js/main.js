@@ -20,6 +20,8 @@ const catalog = new Catalog(products);
 // Hämta viktiga behållare från HTML
 const productsContainer = document.getElementById('products-container');
 const heroSection = document.getElementById('hero-section');
+const filtersBar = document.querySelector('.filters-bar');
+const filtersToggleBtn = document.getElementById('filters-toggle-btn');
 
 // Modaler
 const cartModal = document.getElementById('cart-modal');
@@ -199,6 +201,15 @@ function syncFilterControls() {
     if (onlyNewToggle) onlyNewToggle.checked = Boolean(viewState.onlyNew);
 }
 
+/**
+ * Hanterar öppning/stängning av filterpanelen (mobil)
+ */
+function setFiltersOpen(isOpen) {
+    if (!filtersBar || !filtersToggleBtn) return;
+    filtersBar.classList.toggle('is-open', isOpen);
+    filtersToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
 // ==========================================
 // 3. MODAL FUNCTIONS
 // ==========================================
@@ -305,6 +316,13 @@ function setupEventListeners() {
 
     syncFilterControls();
 
+    if (filtersToggleBtn) {
+        filtersToggleBtn.addEventListener('click', () => {
+            const isOpen = filtersBar?.classList.contains('is-open');
+            setFiltersOpen(!isOpen);
+        });
+    }
+
     const debouncedPriceFilter = debounce(() => {
         if (minPriceInput) viewState.minPrice = asNumberOrNull(minPriceInput.value);
         if (maxPriceInput) viewState.maxPrice = asNumberOrNull(maxPriceInput.value);
@@ -340,6 +358,7 @@ function setupEventListeners() {
             if (searchDropdown) searchDropdown.style.display = 'none';
             syncFilterControls();
             applyFiltersAndSorting();
+            setFiltersOpen(false);
         });
     }
 
@@ -454,7 +473,7 @@ function setupEventListeners() {
     // Stäng varukorg (med animation)
     if (closeCartBtn) {
         closeCartBtn.addEventListener('click', () => {
-            cartModal.classList.add('closing'); 
+            cartModal.classList.add('closing');
             cartModal.addEventListener('animationend', () => {
                 cartModal.close();
                 cartModal.classList.remove('closing');
