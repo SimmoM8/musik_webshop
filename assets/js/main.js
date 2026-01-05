@@ -33,6 +33,13 @@ const searchInput = document.getElementById('search-input');
 const searchDropdown = document.getElementById('search-dropdown');
 const searchBtn = document.getElementById('search-btn');
 
+// Filter & sort-element
+const sortSelect = document.getElementById('sort-select');
+const minPriceInput = document.getElementById('min-price');
+const maxPriceInput = document.getElementById('max-price');
+const onlyNewToggle = document.getElementById('only-new');
+const clearFiltersBtn = document.getElementById('clear-filters-btn');
+
 // Knappar
 const homeBtn = document.getElementById('reset-home-btn'); // Loggan
 const openCartBtn = document.getElementById('open-cart-btn');
@@ -42,7 +49,7 @@ const closeProductBtn = document.getElementById('close-product-btn');
 // Produktfilter och vy-tillstånd
 const viewState = {
     category: null,
-    search: "", // från sökfältet
+    searchTerm: "",
     onlyNew: false, // Visa endast nya produkter
     minPrice: null,
     maxPrice: null,
@@ -151,12 +158,49 @@ function performFullSearch() {
  * Tillämpa filter och sortering baserat på viewState.
  */
 function applyFiltersAndSorting() {
-    const list = catalog.query(viewState);
+    const sortBy = viewState.sortBy || 'featured';
+    if (!viewState.sortBy) {
+        viewState.sortBy = sortBy;
+    }
 
-    console.log(viewState);
-
+    const list = catalog.query({ ...viewState, sortBy });
     renderProducts(list);
-    toggleHero(false);
+    const shouldShowHero = !viewState.category &&
+        !viewState.searchTerm &&
+        !viewState.onlyNew &&
+        viewState.minPrice === null &&
+        viewState.maxPrice === null;
+    toggleHero(shouldShowHero);
+}
+
+/**
+ * Debounce helper for inputs
+ */
+function debounce(fn, delay = 250) {
+    let timeoutId;
+    return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn(...args), delay);
+    };
+}
+
+/**
+ * Säker tolkning av talvärde
+ */
+function asNumberOrNull(value) {
+    if (value === '' || value === null || value === undefined) return null;
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+}
+
+/**
+ * Håller UI-kontroller i synk med state
+ */
+function syncFilterControls() {
+    if (sortSelect) sortSelect.value = viewState.sortBy || 'featured';
+    if (minPriceInput) minPriceInput.value = typeof viewState.minPrice === 'number' ? viewState.minPrice : '';
+    if (maxPriceInput) maxPriceInput.value = typeof viewState.maxPrice === 'number' ? viewState.maxPrice : '';
+    if (onlyNewToggle) onlyNewToggle.checked = Boolean(viewState.onlyNew);
 }
 
 // ==========================================
@@ -263,6 +307,46 @@ function renderCartContents() {
 
 function setupEventListeners() {
 
+    syncFilterControls();
+
+    const debouncedPriceFilter = debounce(() => {
+        if (minPriceInput) viewState.minPrice = asNumberOrNull(minPriceInput.value);
+        if (maxPriceInput) viewState.maxPrice = asNumberOrNull(maxPriceInput.value);
+        applyFiltersAndSorting();
+    }, 250);
+
+    // --- Filter & sorteringsfält ---
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            viewState.sortBy = e.target.value;
+            applyFiltersAndSorting();
+        });
+    }
+
+    if (minPriceInput) minPriceInput.addEventListener('input', debouncedPriceFilter);
+    if (maxPriceInput) maxPriceInput.addEventListener('input', debouncedPriceFilter);
+
+    if (onlyNewToggle) {
+        onlyNewToggle.addEventListener('change', (e) => {
+            viewState.onlyNew = e.target.checked;
+            applyFiltersAndSorting();
+        });
+    }
+
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', () => {
+            viewState.searchTerm = '';
+            viewState.minPrice = null;
+            viewState.maxPrice = null;
+            viewState.onlyNew = false;
+            viewState.sortBy = 'featured';
+            if (searchInput) searchInput.value = '';
+            if (searchDropdown) searchDropdown.style.display = 'none';
+            syncFilterControls();
+            applyFiltersAndSorting();
+        });
+    }
+
     // --- Kategori-filter (Menyn) ---
     document.querySelectorAll('.categories-list__link').forEach(link => {
         link.addEventListener('click', (e) => {
@@ -271,6 +355,7 @@ function setupEventListeners() {
 
             viewState.category = category === 'news' ? null : category;
             viewState.onlyNew = category === 'news';
+            syncFilterControls();
             applyFiltersAndSorting();
         });
     });
@@ -283,9 +368,10 @@ function setupEventListeners() {
             viewState.searchTerm = '';
             viewState.minPrice = null;
             viewState.maxPrice = null;
-            viewState.sortBy = null;
+            viewState.sortBy = 'featured';
 
             if (searchInput) searchInput.value = "";
+            syncFilterControls();
             applyFiltersAndSorting();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
