@@ -147,11 +147,6 @@ function performFullSearch() {
     if (searchDropdown) searchDropdown.style.display = 'none';
 
     applyFiltersAndSorting();
-
-    // Scrolla ner till resultaten
-    if (viewState.searchTerm.trim() && productsContainer) {
-        productsContainer.scrollIntoView({ behavior: 'smooth' });
-    }
 }
 
 /**
