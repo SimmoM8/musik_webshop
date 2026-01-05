@@ -46,6 +46,9 @@ const openCartBtn = document.getElementById('open-cart-btn');
 const closeCartBtn = document.querySelector('#cart-modal .close-btn');
 const closeProductBtn = document.getElementById('close-product-btn');
 
+// Kategori rubrik
+const categoryHeading = document.getElementById('category-heading');
+
 // Produktfilter och vy-tillstånd
 const viewState = {
     category: null,
@@ -352,6 +355,7 @@ function setupEventListeners() {
             viewState.onlyNew = category === 'news';
             syncFilterControls();
             applyFiltersAndSorting();
+            categoryHeading.textContent = category !== 'all' ? ` ${e.target.textContent}` : '';
         });
     });
 
@@ -369,6 +373,7 @@ function setupEventListeners() {
             syncFilterControls();
             applyFiltersAndSorting();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            categoryHeading.textContent = '';
         });
     }
 
