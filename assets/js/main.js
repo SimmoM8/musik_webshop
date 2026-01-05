@@ -7,6 +7,7 @@
 // Vi går NER i mapparna data och classes
 import { products } from './data/products.js';
 import { Cart } from './classes/cart.js';
+import { Catalog } from './classes/catalog.js';
 
 // ==========================================
 // 1. STATE & DOM ELEMENTS
@@ -14,6 +15,9 @@ import { Cart } from './classes/cart.js';
 
 // Initiera varukorgen
 const cart = new Cart();
+
+// Initiera katalogen
+const catalog = new Catalog(products);
 
 // Hämta viktiga behållare från HTML
 const productsContainer = document.getElementById('products-container');
@@ -29,11 +33,31 @@ const searchInput = document.getElementById('search-input');
 const searchDropdown = document.getElementById('search-dropdown');
 const searchBtn = document.getElementById('search-btn');
 
+// Filter & sort-element
+const sortSelect = document.getElementById('sort-select');
+const minPriceInput = document.getElementById('min-price');
+const maxPriceInput = document.getElementById('max-price');
+const onlyNewToggle = document.getElementById('only-new');
+const clearFiltersBtn = document.getElementById('clear-filters-btn');
+
 // Knappar
 const homeBtn = document.getElementById('reset-home-btn'); // Loggan
 const openCartBtn = document.getElementById('open-cart-btn');
 const closeCartBtn = document.querySelector('#cart-modal .close-btn');
 const closeProductBtn = document.getElementById('close-product-btn');
+
+// Kategori rubrik
+const categoryHeading = document.getElementById('category-heading');
+
+// Produktfilter och vy-tillstånd
+const viewState = {
+    category: null,
+    searchTerm: "",
+    onlyNew: false, // Visa endast nya produkter
+    minPrice: null,
+    maxPrice: null,
+    sortBy: "featured" // featured, price-asc, price-desc, name-asc, name-desc
+}
 
 // ==========================================
 // 2. HELPER FUNCTIONS (Hjälpfunktioner)
@@ -120,30 +144,61 @@ function attachProductButtonListeners() {
  * Utför en sökning och uppdaterar sidan.
  */
 function performFullSearch() {
-    const searchTerm = searchInput.value.toLowerCase();
+    viewState.searchTerm = searchInput.value || "";
 
     // Dölj dropdown-menyn vid sökning
     if (searchDropdown) searchDropdown.style.display = 'none';
 
-    if (searchTerm.length > 0) {
-        // Filtrera listan
-        const filtered = products.filter(product =>
-            product.name.toLowerCase().includes(searchTerm) ||
-            product.category.toLowerCase().includes(searchTerm)
-        );
+    applyFiltersAndSorting();
+}
 
-        renderProducts(filtered);
-        toggleHero(false); // Dölj bannern för att visa resultat
-
-        // Scrolla ner till resultaten
-        if (productsContainer) {
-            productsContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-    } else {
-        // Om sökfältet är tomt, visa allt igen
-        renderProducts(products);
-        toggleHero(true);
+/**
+ * Tillämpa filter och sortering baserat på viewState.
+ */
+function applyFiltersAndSorting() {
+    const sortBy = viewState.sortBy || 'featured';
+    if (!viewState.sortBy) {
+        viewState.sortBy = sortBy;
     }
+
+    const list = catalog.query({ ...viewState, sortBy });
+    renderProducts(list);
+    const shouldShowHero = !viewState.category &&
+        !viewState.searchTerm &&
+        !viewState.onlyNew &&
+        viewState.minPrice === null &&
+        viewState.maxPrice === null;
+    toggleHero(shouldShowHero);
+}
+
+/**
+ * Debounce helper for inputs
+ */
+function debounce(fn, delay = 250) {
+    let timeoutId;
+    return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn(...args), delay);
+    };
+}
+
+/**
+ * Säker tolkning av talvärde
+ */
+function asNumberOrNull(value) {
+    if (value === '' || value === null || value === undefined) return null;
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+}
+
+/**
+ * Håller UI-kontroller i synk med state
+ */
+function syncFilterControls() {
+    if (sortSelect) sortSelect.value = viewState.sortBy || 'featured';
+    if (minPriceInput) minPriceInput.value = typeof viewState.minPrice === 'number' ? viewState.minPrice : '';
+    if (maxPriceInput) maxPriceInput.value = typeof viewState.maxPrice === 'number' ? viewState.maxPrice : '';
+    if (onlyNewToggle) onlyNewToggle.checked = Boolean(viewState.onlyNew);
 }
 
 // ==========================================
@@ -250,30 +305,75 @@ function renderCartContents() {
 
 function setupEventListeners() {
 
+    syncFilterControls();
+
+    const debouncedPriceFilter = debounce(() => {
+        if (minPriceInput) viewState.minPrice = asNumberOrNull(minPriceInput.value);
+        if (maxPriceInput) viewState.maxPrice = asNumberOrNull(maxPriceInput.value);
+        applyFiltersAndSorting();
+    }, 250);
+
+    // --- Filter & sorteringsfält ---
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            viewState.sortBy = e.target.value;
+            applyFiltersAndSorting();
+        });
+    }
+
+    if (minPriceInput) minPriceInput.addEventListener('input', debouncedPriceFilter);
+    if (maxPriceInput) maxPriceInput.addEventListener('input', debouncedPriceFilter);
+
+    if (onlyNewToggle) {
+        onlyNewToggle.addEventListener('change', (e) => {
+            viewState.onlyNew = e.target.checked;
+            applyFiltersAndSorting();
+        });
+    }
+
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', () => {
+            viewState.searchTerm = '';
+            viewState.minPrice = null;
+            viewState.maxPrice = null;
+            viewState.onlyNew = false;
+            viewState.sortBy = 'featured';
+            if (searchInput) searchInput.value = '';
+            if (searchDropdown) searchDropdown.style.display = 'none';
+            syncFilterControls();
+            applyFiltersAndSorting();
+        });
+    }
+
     // --- Kategori-filter (Menyn) ---
     document.querySelectorAll('.categories-list__link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const category = e.target.dataset.category;
 
-            if (category === 'news') {
-                renderProducts(products.filter(p => p.isNew));
-            } else if (category) {
-                renderProducts(products.filter(p => p.category === category));
-            } else {
-                renderProducts(products);
-            }
-            toggleHero(false);
+            viewState.category = category === 'news' ? null : category;
+            viewState.onlyNew = category === 'news';
+            syncFilterControls();
+            applyFiltersAndSorting();
+            categoryHeading.textContent = category !== 'all' ? ` ${e.target.textContent}` : '';
         });
     });
 
     // --- Hem-knapp (Reset) ---
     if (homeBtn) {
         homeBtn.addEventListener('click', () => {
+            viewState.category = null;
+            viewState.onlyNew = false;
+            viewState.searchTerm = '';
+            viewState.minPrice = null;
+            viewState.maxPrice = null;
+            viewState.sortBy = 'featured';
+
             if (searchInput) searchInput.value = "";
-            renderProducts(products);
-            toggleHero(true);
+            syncFilterControls();
+            applyFiltersAndSorting();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            categoryHeading.textContent = '';
         });
     }
 

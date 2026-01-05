@@ -330,6 +330,121 @@ a:hover {
 }
 
 /* =========================================
+   FILTERS BAR
+   ========================================= */
+.filters-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    background: rgba(248, 250, 252, 0.7);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.filters-bar__group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 170px;
+    flex: 1 1 auto;
+}
+
+.filters-bar__label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+}
+
+.filters-bar__range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filters-bar__dash {
+    color: var(--color-muted);
+    font-weight: 700;
+}
+
+.filters-bar__sub-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}
+
+.filters-bar__control {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    font-size: 0.95rem;
+    color: var(--color-ink);
+    transition: all 0.2s ease;
+}
+
+.filters-bar__control:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.filters-bar__control--number {
+    max-width: 140px;
+}
+
+.filters-bar__checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.filters-bar__checkbox input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+}
+
+.filters-bar__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.filters-bar__actions .btn {
+    height: 42px;
+    padding: 0 16px;
+}
+
+body.dark-mode .filters-bar {
+    background: rgba(30, 30, 30, 0.7);
+    border-color: #333;
+}
+
+body.dark-mode .filters-bar__control {
+    background: #2d2d2d;
+    border-color: #444;
+    color: #fff;
+}
+
+body.dark-mode .filters-bar__control:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(11, 211, 200, 0.2);
+}
+
+body.dark-mode .filters-bar__label,
+body.dark-mode .filters-bar__sub-label {
+    color: var(--color-muted);
+}
+
+/* =========================================
    HEADER
    ========================================= */
 .site-header {
@@ -1506,5 +1621,28 @@ dialog::backdrop {
         padding: 8px;
         font-size: 0.8rem;
         height: 36px;
+    }
+
+    /* 6. Filters-bar (mobil) */
+    .filters-bar {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .filters-bar__group,
+    .filters-bar__actions {
+        flex: 1 1 100%;
+    }
+
+    .filters-bar__control--number {
+        max-width: 100%;
+    }
+
+    .filters-bar__actions {
+        margin-left: 0;
+    }
+
+    .filters-bar__actions .btn {
+        width: 100%;
     }
 }
